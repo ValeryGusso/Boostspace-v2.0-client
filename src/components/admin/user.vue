@@ -26,12 +26,14 @@
 				{{ isActive ? 'Активен' : 'Запас' }}
 			</button>
 			<button
+				v-if="!user.isAdmin"
 				@click="setBan"
 				class="button"
 				:style="{ background: isBanned ? 'var(--bg-green)' : 'var(--bg-red)', '--x': '-20px' }"
 			>
 				{{ isBanned ? 'Разбанить' : 'Забанить!' }}
 			</button>
+			<div v-else class="admin__banner" title="Невозможно забанить другого администратора!">Админ</div>
 		</div>
 		<div v-if="wasUpdated" class="user success">
 			<img class="success__image" src="@/assets/img/success_animation.gif" alt="success" />
@@ -147,6 +149,18 @@ export default {
 .button:hover {
 	filter: drop-shadow(5px 5px 10px rgba(255, 255, 255, 0.5));
 	transform: translateX(var(--x));
+}
+.admin__banner {
+	width: 150px;
+	height: 60px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--bg-green);
+	font-size: 26px;
+	border-radius: 5px;
+	cursor: default;
+	user-select: none;
 }
 .success {
 	justify-content: center;

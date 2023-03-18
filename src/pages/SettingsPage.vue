@@ -25,6 +25,7 @@
 							isError: avatar.error,
 							errorMessage: avatar.errorMessage,
 							image: avatar.image,
+							direction: 'center',
 						}"
 					/>
 				</div>
@@ -126,6 +127,7 @@
 						defaultValue: $store.state.auth.user.role,
 						width: 200,
 						columns: 1,
+						dontShowColor: true,
 					}"
 				/>
 				<group-picker v-model="group" />
@@ -325,43 +327,5 @@ export default {
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
-}
-.group {
-	position: relative;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-.group__title {
-	font-size: 56px;
-	color: var(--main-text);
-	font-weight: bold;
-	cursor: pointer;
-	user-select: none;
-}
-.group__title > span {
-	font-size: 32px;
-}
-.group__icon {
-	position: absolute;
-	left: calc(50% + 85px);
-	width: 28px;
-	height: 28px;
-	cursor: pointer;
-	fill: var(--main-text);
-	transition: var(--fast-transition);
-}
-.group__icon__up {
-	top: 2px;
-}
-.group__icon_down {
-	top: 34px;
-	transform: rotateX(180deg);
-}
-.group__icon:hover {
-	fill: var(--active-text);
-}
-.group__icon__error:hover {
-	fill: var(--error);
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
 	<div class="container">
 		<div class="keys" v-if="!$store.state.players.loading">
-			<div class="title">
+			<div class="title table__title">
 				<p>Group / name</p>
 				<p>Main</p>
 				<p>1st</p>
@@ -23,7 +23,7 @@
 
 <script>
 import GroupModule from '@/components/group/group.vue'
-import keyFinder from '@/components/keyFinder.vue'
+import keyFinder from '@/components/UI/keyFinder.vue'
 import editMenu from '@/components/group/editMenu.vue'
 
 export default {
@@ -50,12 +50,12 @@ export default {
 
 		this.socket = new WebSocket('ws://localhost:666/')
 
-		this.socket.onopen = () => {
-			console.log('WebSocket UP')
-		}
-		this.socket.onclose = () => {
-			console.log('WebSocket DOWN')
-		}
+		// this.socket.onopen = () => {
+		// 	console.log('WebSocket UP')
+		// }
+		// this.socket.onclose = () => {
+		// 	console.log('WebSocket DOWN')
+		// }
 		this.socket.onmessage = msg => {
 			if (msg.data === 'updated') {
 				this.$store.dispatch('players/getPlayers')
@@ -85,8 +85,6 @@ export default {
 	user-select: none;
 }
 .keys {
-	margin-top: 50px;
-	margin-left: 50px;
 	display: flex;
 	flex-direction: column;
 }
@@ -97,9 +95,6 @@ export default {
 	align-items: center;
 	justify-items: center;
 	margin-bottom: 5px;
-	background: linear-gradient(0deg, var(--bg-dark), var(--bg-second));
-	border-top-left-radius: 15px;
-	border-top-right-radius: 15px;
 }
 .title > p {
 	width: 100%;

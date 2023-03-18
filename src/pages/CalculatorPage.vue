@@ -1,36 +1,38 @@
 <template>
 	<div class="calculator">
-		<div class="calculator__date">
-			<p>Выбери период:</p>
-			<datepicker
-				v-model="range"
-				range
-				locale="ru"
-				cancelText="отмена"
-				selectText="выбрать"
-				format="dd/MM/yy"
-				calendar-class-name="datepicker__calendar"
-				menu-class-name="datepicker__calendar__menu"
-				input-class-name="datepicker__calendar__input"
-				:enable-time-picker="false"
-				:min-date="'12.05.2022'"
-				:max-date="new Date()"
+		<div class="calculator__header">
+			<div class="calculator__date">
+				<p>Выбери период:</p>
+				<datepicker
+					v-model="range"
+					range
+					locale="ru"
+					cancelText="отмена"
+					selectText="выбрать"
+					format="dd/MM/yy"
+					calendar-class-name="datepicker__calendar"
+					menu-class-name="datepicker__calendar__menu"
+					input-class-name="datepicker__calendar__input"
+					:enable-time-picker="false"
+					:min-date="'12.05.2022'"
+					:max-date="new Date()"
+				/>
+			</div>
+			<button-submit
+				v-if="range"
+				:options="{
+					width: 600,
+					defaultWidth: 350,
+					tabindex: 1,
+					handler: fetchData,
+					prevent: true,
+					fontSize: 32,
+					text: 'Посчитать!',
+					loadingText: 'Загружаю данные...',
+					isLoading: this.loading,
+				}"
 			/>
 		</div>
-		<button-submit
-			v-if="range"
-			:options="{
-				width: 600,
-				defaultWidth: 350,
-				tabindex: 1,
-				handler: fetchData,
-				prevent: true,
-				fontSize: 32,
-				text: 'Посчитать!',
-				loadingText: 'Загружаю данные...',
-				isLoading: this.loading,
-			}"
-		/>
 		<div v-if="!loading" class="calculator__content">
 			<div v-if="data" class="calculator__info">
 				<p>
@@ -38,25 +40,21 @@
 					<span>{{ data.players[$store.state.auth.user?.nickname]?.toFixed(2) || '0.00' }} $</span>
 				</p>
 			</div>
-			<!-- <div v-if="data" class="calculator__buttons">
-				<button @click="showOrders = !showOrders">{{ showOrders ? 'Скрыть' : 'Показать' }} заказы</button>
-				<button @click="showPayments = !showPayments">{{ showPayments ? 'Скрыть' : 'Показать' }} сводку</button>
-			</div> -->
 			<div v-if="data" class="calculator__tables">
-				<div class="calculator__payments table">
-					<div class="calculator__payments__title calculator__payments__row">
+				<div class="calculator__payments">
+					<div class="calculator__payments__title calculator__payments__row table__title">
 						<p>Игрок</p>
 						<p>Выплата</p>
 					</div>
-					<div class="calculator__tables__scroll__wrapper table">
+					<div class="calculator__tables__scroll__wrapper table table__scrollbar">
 						<div class="calculator__payments__row" v-for="player in payments">
 							<p>{{ player.name }}</p>
 							<p>{{ player.summ.toFixed(2) }}$</p>
 						</div>
 					</div>
 				</div>
-				<div class="calculator__orders table">
-					<div class="calculator__orders__title">
+				<div class="calculator__orders">
+					<div class="calculator__orders__title table__title">
 						<p>Дата</p>
 						<p>Заказ</p>
 						<p>Группа</p>
@@ -64,19 +62,22 @@
 						<p>Доля</p>
 						<p>%</p>
 					</div>
-					<div class="calculator__tables__scroll__wrapper table">
+					<div class="calculator__tables__scroll__wrapper table table__scrollbar">
 						<small-row v-for="row in myOrders" :key="row.row" :row="row" />
 					</div>
 				</div>
 			</div>
 		</div>
-		<div v-else class="calculator__loader"><loader /></div>
+		<div v-else class="calculator__loader">
+			<p>Выполняется расчёт, подожди немного</p>
+			<loader />
+		</div>
 	</div>
 </template>
 
 <script>
 import datepicker from '@vuepic/vue-datepicker'
-import loader from '@/components/loader.vue'
+import loader from '@/components/UI/loader.vue'
 import smallRow from '@/components/payment/smallRow.vue'
 import buttonSubmit from '@/components/UI/buttonSubmit.vue'
 import '@vuepic/vue-datepicker/dist/main.css'
@@ -123,7 +124,6 @@ export default {
 					} else {
 						this.error = res.message
 					}
-					console.log(res)
 				})
 				.finally(() => {
 					this.loading = false
@@ -155,26 +155,31 @@ export default {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	row-gap: 10px;
+}
+.calculator__header {
+	height: 80px;
+	padding: 10px 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	column-gap: 100px;
 }
 .calculator__date {
-	/* width: 500px; */
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	column-gap: 15px;
 	color: var(--main-text);
 	font-size: 32px;
-	margin-top: 2vh;
 }
-
 .calculator__content {
+	height: calc(99vh - 80px);
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	row-gap: 2vh;
 }
 .calculator__info {
+	height: 5vh;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -192,7 +197,6 @@ export default {
 	display: grid;
 	grid-template-columns: 100px 150px 1fr repeat(2, 100px) 50px;
 	color: var(--main-text);
-	background: linear-gradient(0deg, var(--bg-dark), var(--bg-second)) !important;
 	border-top-left-radius: 15px;
 	border-top-right-radius: 15px;
 }
@@ -215,7 +219,7 @@ export default {
 	color: var(--main-text);
 }
 .calculator__payments__title {
-	background: linear-gradient(0deg, var(--bg-dark), var(--bg-second)) !important;
+	width: calc(100% - 15px);
 	border-top-left-radius: 15px;
 	border-top-right-radius: 15px;
 	border-bottom: none !important;
@@ -244,42 +248,20 @@ export default {
 .calculator__payments__row > p:first-child {
 	border-right: 1px solid var(--main-text);
 }
-.calculator__buttons {
-	display: flex;
-	/* justify-content: space-between; */
-	column-gap: 20px;
-}
-.calculator__buttons > button {
-	padding: 10px 35px;
-	font-size: 24px;
-	background: var(--main-text);
-	border: none;
-	color: var(--dark-text);
-	cursor: pointer;
-	/* box-shadow: 0px 0px 2px rgba(255, 255, 255, 0.75); */
-	border-radius: 5px;
-	transition: var(--fast-transition);
-}
-.calculator__buttons > button:hover {
-	/* box-shadow: 5px 5px 2px rgba(255, 255, 255, 0.75); */
-	background: var(--active-text);
-}
 .calculator__tables {
 	width: 100%;
+	height: calc(100% - 5vh);
 	display: flex;
 	justify-content: space-around;
 	column-gap: 100px;
 }
 .calculator__tables__scroll__wrapper {
-	max-height: 62vh;
+	height: calc(100% - 5vh - 15px);
 	display: flex;
 	flex-direction: column;
 	overflow-y: auto;
 	overflow-x: hidden;
 }
-/* .calculator__tables__scroll__wrapper::-webkit-scrollbar {
-	width: 20px; */
-/* } */
 /* Datepicker */
 .dp__theme_light {
 	--dp-background-color: var(--main-text);
@@ -289,14 +271,14 @@ export default {
 	--dp-hover-icon-color: var(--main-text);
 	--dp-primary-color: #1976d2;
 	--dp-primary-text-color: var(--main-text);
-	--dp-secondary-color: #c0c4cc;
+	--dp-secondary-color: #6c6060;
 	--dp-border-color: var(--main-text);
 	--dp-menu-border-color: var(--main-text);
 	--dp-border-color-hover: #aaaeb7;
 	--dp-disabled-color: #f6f6f6;
 	--dp-scroll-bar-background: #f3f3f3;
 	--dp-scroll-bar-color: #959595;
-	--dp-success-color: #76d275;
+	--dp-success-color: var(--green-text);
 	--dp-success-color-disabled: #a3d9b1;
 	--dp-icon-color: #959595;
 	--dp-danger-color: #ff6f60;
@@ -308,5 +290,22 @@ export default {
 .datepicker__calendar__input {
 	font-style: italic;
 	font-size: 22px;
+}
+/* Loader */
+.calculator__loader {
+	height: calc(99vh - 80px);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	row-gap: 50px;
+	user-select: none;
+}
+.calculator__loader > p {
+	font-size: 32px;
+	color: var(--main-text);
+}
+.calculator__loader > div {
+	transform: scale(2);
 }
 </style>

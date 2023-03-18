@@ -9,8 +9,11 @@
 			:value="$attrs.value"
 			@input="change"
 		></textarea>
-
-		<p @click="click" :class="isActive ? 'active' : ''" class="placeholder">
+		<p
+			@click="click"
+			:class="{ placeholder: true, active: isActive }"
+			:style="{ '--ratio': options.direction === 'center' ? '-20px' : '-160px' }"
+		>
 			<inline-svg class="icon" :src="options.image" />{{ options.placeholder }}
 		</p>
 		<p class="error" v-if="options.isError">{{ options.errorMessage }}</p>
@@ -58,6 +61,9 @@ export default {
 <style scoped>
 .container {
 	position: relative;
+	width: 400px;
+	/* height: 100%; */
+	height: 60px;
 	display: flex;
 }
 .container > textarea {
@@ -74,7 +80,7 @@ export default {
 	font-size: 22px;
 	border: 4px solid transparent;
 	border-bottom: 4px solid var(--main-text);
-	transition: 0.5s;
+	transition: var(--fast-transition);
 }
 .input__error {
 	background: rgba(233, 72, 85, 0.4) !important;
@@ -93,16 +99,16 @@ export default {
 	align-items: center;
 	column-gap: 10px;
 	left: 50px;
-	top: calc(50% - 13px) !important;
+	top: calc(50% - 13px);
 	color: var(--main-text);
 	font-size: 26px;
 	border-radius: 5px;
-	transition: 0.5s;
 	user-select: none;
 	cursor: text;
+	transition: var(--fast-transition);
 }
 .active {
-	top: -20px !important;
+	top: var(--ratio);
 	left: 25px !important;
 	padding: 3px 10px;
 	font-size: 20px;

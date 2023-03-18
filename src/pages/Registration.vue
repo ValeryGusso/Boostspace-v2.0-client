@@ -51,6 +51,7 @@
 							isError: invite.error,
 							errorMessage: invite.errorMessage,
 							image: invite.image,
+							direction: 'up',
 						}"
 					/>
 				</div>
@@ -58,6 +59,7 @@
 			<div v-else class="activate">
 				<validated-input
 					v-model:value="code.value"
+					@setFocus="reset('code')"
 					:options="{
 						type: 'text',
 						tabindex: 3,
@@ -84,7 +86,8 @@
 				/>
 				<div class="form__footer__text">
 					<p>Уже есть аккаунт? Так чего же ты ждешь, срочно <router-link to="/login">авторизуйся!</router-link></p>
-					<p>Для получения приглашения <router-link to="/welcome"> тыкни вот тут.</router-link></p>
+					<!-- <p>Для получения приглашения <router-link to="/welcome"> тыкни вот тут.</router-link></p> -->
+					<p>Для получения приглашения <span @click="scroll"> тыкни вот тут.</span></p>
 				</div>
 			</div>
 		</form>
@@ -148,6 +151,9 @@ export default {
 		reset(type) {
 			this[type].error = false
 			this[type].errorMessage = ''
+		},
+		scroll() {
+			window.scrollTo({ top: window.innerHeight * 0.15, left: 0, behavior: 'smooth' })
 		},
 		async submit() {
 			// Prevalidation
@@ -238,6 +244,7 @@ export default {
 						break
 				}
 			} else {
+				this.loading = true
 				const payload = { id: this.id, code: this.code.value }
 
 				const res = await API.post('/auth/activate', payload).finally(() => {
@@ -248,6 +255,9 @@ export default {
 					localStorage.setItem('accessToken', res.data.access)
 					this.$store.commit('auth/setUser', res.data.player)
 					this.$router.push('/home')
+				} else {
+					this.code.error = true
+					this.code.errorMessage = res.response?.data.message
 				}
 			}
 		},
@@ -261,7 +271,6 @@ export default {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	transform: translateY(5vh);
 }
 .container > form:only-of-type {
 	display: flex;
@@ -273,8 +282,9 @@ export default {
 	padding: 50px 150px;
 	padding-top: 50px;
 	border-radius: 15px;
-	background: rgba(0, 0, 0, 0.35);
-	box-shadow: 10px 10px 15px black, -10px -10px 15px black, -10px 10px 15px black, 10px -10px 15px black;
+	background: var(--bg-opacity-second);
+	box-shadow: 15px 15px 15px rgba(255, 255, 255, 0.1), -15px -15px 15px rgba(255, 255, 255, 0.1),
+		-15px 15px 15px rgba(255, 255, 255, 0.1), 15px -15px 15px rgba(255, 255, 255, 0.1);
 }
 .form__title {
 	font-size: 56px;
@@ -294,9 +304,6 @@ export default {
 	align-items: center;
 	text-align: center;
 	row-gap: 75px;
-}
-.inputs > div:nth-child(2) {
-	transform: translateY(-45px);
 }
 .activate {
 	margin: 50px 0;
@@ -322,13 +329,15 @@ export default {
 	color: var(--main-text);
 	cursor: default;
 }
-.form__footer__text > p > a {
+.form__footer__text > p > a,
+.form__footer__text > p > span {
 	text-decoration: underline 2px solid var(--main-text);
 	color: var(--main-text);
 	cursor: pointer;
 	transition: var(--fast-transition);
 }
-.form__footer__text > p > a:hover {
+.form__footer__text > p > a:hover,
+.form__footer__text > p > span:hover {
 	color: var(--active-text);
 	text-decoration: underline 4px solid var(--active-text);
 }

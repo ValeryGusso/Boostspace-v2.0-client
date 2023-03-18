@@ -1,9 +1,10 @@
 <template>
-	<div class="container">
+	<div @mouseenter="onFocus = true" @mouseleave="onFocus = false" class="container">
 		<input
 			@focus="focus"
 			@blur="blur"
 			ref="input"
+			:id="id"
 			:class="{ focus: isActive, input__error: options.isError }"
 			:type="showPass || options.type === 'text' ? 'text' : 'password'"
 			:tabindex="options.tabindex"
@@ -12,12 +13,14 @@
 			@input="change"
 		/>
 		<inline-svg @click="click" class="icon" :src="options.image" />
+		<!-- <label :for="id"> -->
 		<inline-svg
 			v-if="options.type === 'password'"
 			@click="setPassVisible"
 			class="eye"
 			:src="showPass ? eyeOffImage : eyeImage"
 		/>
+		<!-- </label> -->
 		<p @click="click" :class="isActive ? 'active' : ''" class="placeholder">{{ options.placeholder }}</p>
 		<p class="error" v-if="options.isError">{{ options.errorMessage }}</p>
 	</div>
@@ -33,14 +36,19 @@ export default {
 		return {
 			showPass: false,
 			isActive: false,
+			onFocus: false,
+			id: Math.random(),
 			eyeImage,
 			eyeOffImage,
 		}
 	},
 	methods: {
 		blur() {
-			if (!this.$attrs.value) {
+			if (!this.isActive || !this.$attrs.value) {
 				this.isActive = false
+			}
+			if (this.onFocus) {
+				this.isActive = true
 			}
 		},
 		focus() {
@@ -50,15 +58,16 @@ export default {
 		click() {
 			if (!this.isActive) {
 				this.$refs.input.focus()
+			} else {
+				this.isActive = true
 			}
-			this.isActive = true
 		},
 		setPassVisible() {
 			this.$refs.input.focus()
 			this.showPass = !this.showPass
-			// if (this.isActive) {
-			// 	this.$refs.input.focus()
-			// }
+			if (this.isActive) {
+				this.$refs.input.focus()
+			}
 			this.isActive = true
 		},
 		change(e) {
@@ -99,6 +108,7 @@ export default {
 .input__error {
 	background: rgba(233, 72, 85, 0.4) !important;
 	border: 4px solid var(--error) !important;
+	animation: tremor 0.5s ease-in-out 0s 1 normal forwards;
 }
 .focus {
 	color: var(--dark-text) !important;
@@ -155,5 +165,25 @@ export default {
 	top: 62px;
 	font-size: 20px;
 	color: var(--error);
+}
+@keyframes tremor {
+	0% {
+		transform: translateX(0px);
+	}
+	20% {
+		transform: translateX(30px);
+	}
+	40% {
+		transform: translateX(-23px);
+	}
+	60% {
+		transform: translateX(12px);
+	}
+	80% {
+		transform: translateX(-7px);
+	}
+	100% {
+		transform: translateX(0px);
+	}
 }
 </style>

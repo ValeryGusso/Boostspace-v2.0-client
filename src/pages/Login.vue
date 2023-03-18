@@ -43,7 +43,8 @@
 				<p>
 					Ещё нет аккаунта? Так чего же ты ждешь, срочно <router-link to="/registration">зарегистрируйся!</router-link>
 				</p>
-				<p>Забыл пароль? Восстановить можно <router-link to="/welcome">тут.</router-link></p>
+				<!-- <p>Забыл пароль? Восстановить можно <router-link to="/welcome">тут.</router-link></p> -->
+				<p>Забыл пароль? Восстановить можно <span @click="scroll">тут.</span></p>
 			</div>
 		</form>
 	</div>
@@ -86,6 +87,9 @@ export default {
 			this[type].error = false
 			this[type].errorMessage = ''
 		},
+		scroll() {
+			window.scrollTo({ top: window.innerHeight * 0.15, left: 0, behavior: 'smooth' })
+		},
 		submit() {
 			// Prevalidation
 			let isError = false
@@ -108,7 +112,6 @@ export default {
 			this.loading = true
 			API.post('/auth/login', { login: this.login.value, password: this.password.value })
 				.then(res => {
-					console.log(res)
 					if (res.status === 200) {
 						localStorage.setItem('accessToken', res.data.access)
 						this.$store.commit('auth/setUser', res.data.player)
@@ -133,10 +136,8 @@ export default {
 .container:only-of-type {
 	display: flex;
 	justify-content: center;
-	transform: translateY(5vh);
 }
 .container > form {
-	/* min-height: 65vh; */
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -145,8 +146,9 @@ export default {
 	padding: 50px 150px;
 	padding-top: 50px;
 	border-radius: 15px;
-	background: rgba(0, 0, 0, 0.35);
-	box-shadow: 10px 10px 15px black, -10px -10px 15px black, -10px 10px 15px black, 10px -10px 15px black;
+	background: var(--bg-opacity-second);
+	box-shadow: 15px 15px 15px rgba(255, 255, 255, 0.1), -15px -15px 15px rgba(255, 255, 255, 0.1),
+		-15px 15px 15px rgba(255, 255, 255, 0.1), 15px -15px 15px rgba(255, 255, 255, 0.1);
 }
 .form__title {
 	font-size: 56px;
@@ -185,13 +187,15 @@ export default {
 	color: var(--main-text);
 	cursor: default;
 }
-.form__footer > p > a {
+.form__footer > p > a,
+.form__footer > p > span {
 	text-decoration: underline 2px solid var(--main-text);
 	color: var(--main-text);
 	cursor: pointer;
 	transition: var(--fast-transition);
 }
-.form__footer > p > a:hover {
+.form__footer > p > a:hover,
+.form__footer > p > span:hover {
 	color: var(--active-text);
 	text-decoration: underline 4px solid var(--active-text);
 }

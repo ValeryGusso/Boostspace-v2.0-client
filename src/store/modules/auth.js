@@ -19,8 +19,5 @@ export default {
 			state.isAuth = false
 		},
 	},
-	actions: {
-		getUser({ state, commit }) {},
-	},
 	namespaced: true,
 }

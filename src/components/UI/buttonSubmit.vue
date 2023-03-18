@@ -72,6 +72,7 @@ export default {
 	border-radius: 50%;
 	border: 2px solid var(--dark-text);
 	animation: move 5s infinite linear;
+	z-index: 1001;
 }
 .loading::before {
 	content: '';
@@ -83,6 +84,7 @@ export default {
 	border-radius: 50%;
 	border: 2px solid var(--dark-text);
 	animation: move2 5s infinite linear;
+	z-index: 1001;
 }
 @keyframes move {
 	0% {

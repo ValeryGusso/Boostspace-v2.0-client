@@ -5,7 +5,13 @@
 			ключа:
 		</p>
 		<ul>
-			<li @click="setSearched(item)" v-for="item in keysList" :style="{ background: setColor(item) }" :key="item">
+			<li
+				@click="setSearched(item)"
+				v-for="item in keysList"
+				:style="{ background: setColor(item) }"
+				:class="{ searched: setColor(item) }"
+				:key="item"
+			>
 				{{ item }}
 			</li>
 		</ul>
@@ -62,20 +68,31 @@ export default {
 	width: calc(50% - 5px);
 	height: 75px;
 	font-size: 30px;
-	/* border: 2px solid var(--main-text); */
-	/* border-radius: 15px; */
+	font-weight: bold;
+	font-style: italic;
 	list-style: none;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	color: var(--main-text);
 	cursor: pointer;
-	filter: drop-shadow(0 0 2px var(--main-text));
-	background: linear-gradient(0deg, var(--bg-dark), var(--bg-second));
+	border-radius: 10px;
+	border: 2px solid var(--main-text);
 	transition: var(--fast-transition);
 }
 .finder > ul > li:hover {
-	filter: drop-shadow(0 0 5px var(--active-text));
-	background: linear-gradient(45deg, var(--bg-dark), var(--bg-second));
+	background: var(--bg-opacity-third);
+	color: var(--active-text);
+	border: 2px solid transparent !important;
+}
+.finder > ul > li:nth-child(2n):hover {
+	transform: translateX(15px);
+}
+.finder > ul > li:nth-child(2n + 1):hover {
+	transform: translateX(-15px);
+}
+.searched {
+	color: var(--dark-text) !important;
+	border: 2px solid transparent !important;
 }
 </style>

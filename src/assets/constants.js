@@ -8,20 +8,22 @@ import loginImage from '@/assets/img/login.svg'
 import regImage from '@/assets/img/registration.svg'
 import welcomeImage from '@/assets/img/welcome.svg'
 
+const defaultColor = 'var(--active-text)'
+
 export const searchQuery = [
-	{ title: 'всем полям', color: '#6f8aec' },
-	{ title: 'типу', color: '#6f8aec' },
-	{ title: 'составу', color: '#6f8aec' },
-	{ title: 'цене (дороже)', color: '#6f8aec' },
-	{ title: 'цене (дешевле)', color: '#6f8aec' },
-	{ title: 'доле (больше)', color: '#6f8aec' },
-	{ title: 'доле (меньше)', color: '#6f8aec' },
-	{ title: 'заметке', color: '#6f8aec' },
+	{ title: 'всем полям', color: defaultColor },
+	{ title: 'типу', color: defaultColor },
+	{ title: 'составу', color: defaultColor },
+	{ title: 'цене (дороже)', color: defaultColor },
+	{ title: 'цене (дешевле)', color: defaultColor },
+	{ title: 'доле (больше)', color: defaultColor },
+	{ title: 'доле (меньше)', color: defaultColor },
+	{ title: 'заметке', color: defaultColor },
 ]
 export const orderQuery = [
-	{ title: 'по умолчанию', color: '#6f8aec' },
-	{ title: 'сначала старые', color: '#6f8aec' },
-	{ title: 'сначала новые', color: '#6f8aec' },
+	{ title: 'по умолчанию', color: defaultColor },
+	{ title: 'сначала старые', color: defaultColor },
+	{ title: 'сначала новые', color: defaultColor },
 ]
 
 export const menuUnauthList = [
@@ -134,36 +136,36 @@ export const classColors = [
 ]
 
 export const rolesList = [
-	{ title: 'Танк', color: '#6f8aec' },
+	{ title: 'Танк', color: defaultColor },
 	{ title: 'Хил', color: '#3ead12' },
 	{ title: 'ДД', color: '#edaf4a' },
 ]
 
 export const keyListSelect = [
-	{ title: 'AA', color: '#6f8aec' },
-	{ title: 'RPL', color: '#6f8aec' },
-	{ title: 'AV', color: '#6f8aec' },
-	{ title: 'NO', color: '#6f8aec' },
-	{ title: 'CoS', color: '#6f8aec' },
-	{ title: 'HoV', color: '#6f8aec' },
-	{ title: 'SBG', color: '#6f8aec' },
-	{ title: 'TJS', color: '#6f8aec' },
+	{ title: 'AA', color: defaultColor },
+	{ title: 'RPL', color: defaultColor },
+	{ title: 'AV', color: defaultColor },
+	{ title: 'NO', color: defaultColor },
+	{ title: 'CoS', color: defaultColor },
+	{ title: 'HoV', color: defaultColor },
+	{ title: 'SBG', color: defaultColor },
+	{ title: 'TJS', color: defaultColor },
 	{ title: 'очистить', color: '#d84848' },
 ]
 
 export const lvlListSelect = [
-	{ title: '<15', color: '#6f8aec' },
-	{ title: '15', color: '#6f8aec' },
-	{ title: '16', color: '#6f8aec' },
-	{ title: '17', color: '#6f8aec' },
-	{ title: '18', color: '#6f8aec' },
-	{ title: '19', color: '#6f8aec' },
-	{ title: '20', color: '#6f8aec' },
-	{ title: '21', color: '#6f8aec' },
-	{ title: '22', color: '#6f8aec' },
-	{ title: '23', color: '#6f8aec' },
-	{ title: '24', color: '#6f8aec' },
-	{ title: '25', color: '#6f8aec' },
+	{ title: '<15', color: defaultColor },
+	{ title: '15', color: defaultColor },
+	{ title: '16', color: defaultColor },
+	{ title: '17', color: defaultColor },
+	{ title: '18', color: defaultColor },
+	{ title: '19', color: defaultColor },
+	{ title: '20', color: defaultColor },
+	{ title: '21', color: defaultColor },
+	{ title: '22', color: defaultColor },
+	{ title: '23', color: defaultColor },
+	{ title: '24', color: defaultColor },
+	{ title: '25', color: defaultColor },
 	{ title: 'очистить', color: '#d84848' },
 ]
 

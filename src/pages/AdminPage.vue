@@ -4,7 +4,8 @@
 			<p class="invite__title">
 				{{
 					invite.value
-						? `Код-приглашение для ${name.value} в ${invite.group}-ю группу на роль ${invite.role}`
+						? `Код-приглашение для ${name.value}
+				в ${invite.group}-ю группу на роль ${invite.role}`
 						: 'Создать код-приглашение.'
 				}}
 			</p>
@@ -24,7 +25,14 @@
 			<div v-if="invite.status === 'init'" class="invite__group">
 				<select-bar
 					v-model="invite.role"
-					:options="{ list: rolesList, defaultValue: 'ДД', placeholder: 'Роль: ', width: 200, columns: 1 }"
+					:options="{
+						list: rolesList,
+						defaultValue: 'ДД',
+						placeholder: 'Роль: ',
+						width: 200,
+						columns: 1,
+						dontShowColor: true,
+					}"
 				/>
 				<group-picker v-model="invite.group" />
 			</div>
@@ -66,7 +74,6 @@
 					:updateError="getUpdateError(user.id)"
 				/>
 			</div>
-			<!-- v-if="userUpdateData.length > 0" -->
 			<div class="userpanel__button">
 				<button-submit
 					:options="{
@@ -120,7 +127,7 @@ export default {
 			countdown: null,
 			isCopied: false,
 			userUpdateData: [],
-			updateLoading: false
+			updateLoading: false,
 		}
 	},
 	methods: {
@@ -146,7 +153,6 @@ export default {
 			if (this.invite.status === 'init') {
 				this.invite.status = 'pending'
 				const { data } = await API.post('/users/invite', { name: this.name.value, role: this.role, group: this.group })
-				console.log(data)
 				if (data.success) {
 					this.invite.value = data.invite
 					this.invite.status = 'success'
@@ -269,7 +275,6 @@ export default {
 				this.userUpdateData = this.userUpdateData.filter(user => !user.updateError && !user.wasUpdated)
 				this.$store.dispatch('players/getPlayers')
 			}, 5000)
-			console.log(this.userUpdateData)
 		},
 		getWasChanged(id) {
 			const currentUser = this.userUpdateData.find(user => user.id === id)
@@ -309,21 +314,25 @@ export default {
 
 <style scoped>
 .admin {
+	width: 100%;
+	height: 100vh;
 	display: flex;
 	align-items: center;
-	justify-content: space-around;
+	justify-content: space-between;
 }
 .invite {
 	position: relative;
-	width: 500px;
-	height: 90vh;
-	padding-top: 5vh;
+	height: 100%;
+	width: 35vw;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	padding-top: 5vh;
 	row-gap: 35px;
+	border: 1px solid white;
 }
 .invite__title {
+	max-width: 500px;
 	font-size: 32px;
 	text-align: center;
 	color: var(--main-text);
@@ -355,7 +364,7 @@ export default {
 	width: 50px;
 	height: 50px;
 	top: 400px;
-	left: 390px;
+	left: 470px;
 	cursor: pointer;
 	filter: opacity(0.25);
 	transition: var(--fast-transition);
@@ -366,7 +375,7 @@ export default {
 .invite__copy__text {
 	position: absolute;
 	top: 415px;
-	left: 220px;
+	left: 300px;
 	font-size: 24px;
 	color: var(--dark-text);
 	filter: opacity(0);
@@ -422,20 +431,23 @@ export default {
 }
 .userpanel {
 	width: 65vw;
-	height: 90vh;
+	height: 99vh;
 	display: flex;
 	justify-content: space-between;
 	flex-direction: column;
 }
 .userpanel__list {
 	width: 100%;
-	height: 82vh;
+	height: 99vh;
 	display: flex;
 	flex-direction: column;
 	border-left: 2px dashed var(--main-text);
 	overflow-y: auto;
 }
 .userpanel__button {
+	position: absolute;
+	top: 90vh;
+	left: -35vw;
 	width: 100%;
 	height: 7vh;
 	display: flex;

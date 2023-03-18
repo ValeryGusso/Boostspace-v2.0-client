@@ -1,7 +1,7 @@
 <template>
 	<div v-if="!isLoading" class="container">
 		<search-panel @setSearch="setSearch" />
-		<div class="data__title">
+		<div class="data__title table__title">
 			<p>Дата</p>
 			<p>Заказ</p>
 			<p>Группа</p>
@@ -11,11 +11,12 @@
 			<p>Описание</p>
 			<p>%</p>
 		</div>
-		<div class="data__orders">
+		<div class="data__orders table table__scrollbar">
 			<transition-group name="flip-list">
 				<data-row v-for="row in sortedData" :row="row" :search="searchOptions.search" :key="row.row" />
 			</transition-group>
 			<div class="data__orders__notfound" v-if="sortedData?.length === 0">
+				<img src="@/assets/img/notsearched.webp" alt="nosearched" draggable="false" />
 				<p>К сожалению по твоему запросу ничего не найдено! Пропробуй уточнить запрос и повторить попытку.</p>
 			</div>
 		</div>
@@ -29,7 +30,7 @@
 <script>
 import DataRow from '@/components/orders/Row.vue'
 import SearchPanel from '@/components/orders/SearchPanel.vue'
-import loadSpinner from '@/components/loader.vue'
+import loadSpinner from '@/components/UI/loader.vue'
 import { searchQuery, orderQuery } from '@/assets/constants'
 import { API } from '@/axios/API'
 import { getPart } from '@/utils/calculate'
@@ -144,8 +145,8 @@ export default {
 
 <style scoped>
 .container:only-of-type {
-	height: 90vh;
-	padding-top: 2vh;
+	height: 100%;
+	padding-top: 20px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -155,9 +156,11 @@ export default {
 .data__title {
 	width: 85vw;
 	display: grid;
-	margin-top: 15px;
-	margin-right: 20px;
+	margin-top: 5px;
+	justify-self: start;
+	margin-right: 15px;
 	grid-template-columns: 100px 150px 1fr repeat(2, 100px) repeat(2, 300px) 50px;
+	user-select: none;
 }
 .data__title > p {
 	width: 100%;
@@ -169,7 +172,6 @@ export default {
 	font-size: 26px;
 	border-right: 1px solid var(--main-text);
 	color: var(--main-text);
-	background: linear-gradient(0deg, var(--bg-dark), var(--bg-second));
 }
 .data__title > p:first-child {
 	border-top-left-radius: 15px;
@@ -179,20 +181,11 @@ export default {
 	border-top-right-radius: 15px;
 }
 .data__orders {
-	width: calc(85vw + 20px);
-	height: 75vh;
+	width: calc(85vw + 15px);
+	height: calc((99vh - 100px));
 	overflow-y: auto;
 	display: flex;
 	flex-direction: column;
-}
-.data__orders::-webkit-scrollbar {
-	width: 20px;
-}
-.data__orders > div:nth-child(2n) {
-	background: linear-gradient(45deg, var(--bg-second), var(--bg-dark));
-}
-.data__orders > div:nth-child(2n + 1) {
-	background: linear-gradient(45deg, var(--bg-dark), var(--bg-second));
 }
 .flip-list-move {
 	transition: transform var(--fast-transition);
@@ -204,6 +197,7 @@ export default {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+	user-select: none;
 }
 .loader > p {
 	font-size: 32px;
@@ -212,5 +206,24 @@ export default {
 .loader > div {
 	margin-top: 100px;
 	transform: scale(2);
+}
+.data__orders__notfound {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background: none !important;
+}
+.data__orders__notfound > p {
+	width: 50vw;
+	text-align: center;
+	font-style: italic;
+	font-size: 32px;
+	color: var(--main-text);
+	cursor: default;
+	user-select: none;
+}
+.data__orders__notfound > img {
+	height: 50vh;
 }
 </style>

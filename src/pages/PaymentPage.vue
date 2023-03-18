@@ -18,13 +18,13 @@
 				</div>
 				<ul>
 					<div class="period__payments__title">
-						<li>
+						<li class="table__title">
 							<p>Игрок</p>
 							<p>Выплата</p>
 							<p>Выплачено</p>
 						</li>
 					</div>
-					<div class="period__payments__data">
+					<div class="period__payments__data table table__scrollbar">
 						<li v-for="player in data" :key="player.name">
 							<p>{{ player.name }}</p>
 							<p>{{ setPaymentOverall(player) }}</p>
@@ -39,7 +39,7 @@
 					<load-spinner />
 				</div>
 				<div v-else-if="!error" class="period__orders">
-					<div class="period__orders__title">
+					<div class="period__orders__title table__title">
 						<p>Дата</p>
 						<p>Заказ</p>
 						<p>Группа</p>
@@ -47,7 +47,7 @@
 						<p>Доля</p>
 						<p>%</p>
 					</div>
-					<div class="period__orders__data table">
+					<div class="period__orders__data table table__scrollbar">
 						<small-row v-for="row in orders" :key="row.row" :row="row" />
 					</div>
 				</div>
@@ -64,11 +64,11 @@
 </template>
 
 <script>
-import axios from 'axios'
-import loadSpinner from '@/components/loader.vue'
+import loadSpinner from '@/components/UI/loader.vue'
 import smallRow from '@/components/payment/smallRow.vue'
-import errorMessage from '@/components/errorMessage.vue'
+import errorMessage from '@/components/UI/errorMessage.vue'
 import selectBar from '@/components/UI/select.vue'
+import { API } from '@/axios/API'
 
 export default {
 	data() {
@@ -105,7 +105,7 @@ export default {
 			}
 		},
 		async fetchPeriods() {
-			const res = await axios.get('http://localhost:666/data/payment')
+			const res = await API.get('http://localhost:666/data/payment')
 			if (res.status === 500) {
 				this.error = true
 			} else {
@@ -132,7 +132,7 @@ export default {
 			this.ordersLoading = true
 			const [from, to] = newVal.split(/\s*-\s/g)
 			const isAll = this.searchedPeriod !== 'за всё время'
-			const { data } = await axios.get('http://localhost:666/data', {
+			const { data } = await API.get('http://localhost:666/data', {
 				params: isAll
 					? {
 							from,
@@ -147,8 +147,7 @@ export default {
 	mounted() {
 		this.fetchPeriods()
 		this.ordersLoading = true
-		axios
-			.get('http://localhost:666/data')
+		API.get('http://localhost:666/data')
 			.then(res => {
 				this.orders = res.data.data
 			})
@@ -161,28 +160,40 @@ export default {
 
 <style scoped>
 .container {
-	padding-top: 3vh;
+	height: 100vh;
+	padding-top: 1vh;
+}
+.period__payments {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	column-gap: 100px;
 }
 .leftblock {
-	min-width: 450px;
-	height: 85vh;
-	display: flex;
-	flex-direction: column;
-	align-items: start;
-	justify-content: center;
-}
-.rightblock {
-	min-width: calc(50vw + 10px);
-	min-height: 90vh;
-}
-.period {
-	position: relative;
-	top: -50px;
-	width: 450px;
+	width: 500px;
+	height: calc(99vh - 3px - 1vh);
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	column-gap: 15px;
+	justify-content: center;
+}
+.rightblock {
+	min-width: calc(50vw + 15px);
+	height: calc(99vh - 3px - 1vh);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+}
+.period {
+	width: 450px;
+	height: 100px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 	color: var(--main-text);
 	font-size: 26px;
 }
@@ -198,46 +209,12 @@ export default {
 	cursor: pointer;
 	text-decoration: underline 3px solid yellowgreen;
 }
-.periods__list {
-	position: absolute;
-	width: 500px;
-	top: 75px;
-	padding: 30px 50px;
-	border-radius: 20px;
-	display: flex;
-	flex-direction: column;
-	row-gap: 15px;
-	list-style: none;
-	background: black;
-}
-.periods__list > li {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	padding: 15px 25px;
-	border: 2px solid var(--main-text);
-	border-radius: 10px;
-	cursor: pointer;
-}
-.period__payments {
-	width: 100%;
-	display: flex;
-	align-items: center;
-	justify-content: space-around;
-	color: var(--main-text);
-}
 .period__payments ul {
-	width: 460px;
-	max-height: 70vh;
+	max-height: calc(100% - 100px);
 	display: flex;
 	flex-direction: column;
 	border-radius: 15px;
 	row-gap: 5px;
-}
-.period__payments__title > li {
-	border-top-left-radius: 15px;
-	border-top-right-radius: 15px;
 }
 .period__payments__data {
 	overflow-y: auto;
@@ -250,12 +227,6 @@ export default {
 	display: grid;
 	grid-template-columns: 1fr 150px 150px;
 	transition: var(--fast-transition);
-}
-.period__payments ul > div > li:nth-child(2n) {
-	background: linear-gradient(45deg, var(--bg-second), var(--bg-dark));
-}
-.period__payments ul > div > li:nth-child(2n + 1) {
-	background: linear-gradient(45deg, var(--bg-dark), var(--bg-second));
 }
 .period__payments ul > div > li > p {
 	display: flex;
@@ -278,12 +249,10 @@ export default {
 }
 .period__orders__title {
 	width: 50vw;
+	height: 60px;
 	display: grid;
 	grid-template-columns: 100px 150px 1fr repeat(2, 100px) 50px;
 	color: var(--main-text);
-	background: linear-gradient(0deg, var(--bg-dark), var(--bg-second));
-	border-top-left-radius: 15px;
-	border-top-right-radius: 15px;
 }
 .period__orders__title > p {
 	display: flex;
@@ -299,18 +268,11 @@ export default {
 	border: none;
 }
 .period__orders__data {
-	max-height: 80vh;
-	width: calc(50vw + 10px);
+	max-height: calc(99vh - 65px);
+	width: calc(50vw + 15px);
 	display: flex;
 	flex-direction: column;
 	overflow-y: auto;
-	/* border-radius: 15px; */
-}
-.period__orders > div > div:nth-child(2n) {
-	background: linear-gradient(45deg, var(--bg-second), var(--bg-dark));
-}
-.period__orders > div > div:nth-child(2n + 1) {
-	background: linear-gradient(45deg, var(--bg-dark), var(--bg-second));
 }
 .loader {
 	width: 100%;
@@ -319,6 +281,7 @@ export default {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+	user-select: none;
 }
 .loader > p {
 	font-size: 32px;

@@ -1,6 +1,5 @@
 <template>
 	<div class="search__panel">
-		<!-- <div> -->
 		<select-bar
 			v-model="activeSearchQuery"
 			:options="{
@@ -41,10 +40,7 @@
 			</p>
 			<checkbox v-model="showMyOrders" />
 		</div>
-		<!-- </div> -->
-		<!-- <div> -->
 	</div>
-	<!-- </div> -->
 </template>
 
 <script>

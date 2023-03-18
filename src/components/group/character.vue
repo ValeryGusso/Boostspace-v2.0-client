@@ -177,6 +177,7 @@ export default {
 	border-left: 1px solid var(--main-text);
 }
 .character_class {
+	/* filter: drop-shadow(1px 1px 4px white); */
 	color: var(--main-text);
 }
 .disabled {

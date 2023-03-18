@@ -35,11 +35,9 @@ export default {
 			if (res.status === 200) {
 				commit('setPlayers', { data: res.data.data, groupList: res.data.groupList })
 				commit('setLoading', { isLoading: false, status: 'fulfilled' })
-				// console.log('Users loading fulfiller')
 			} else {
 				commit('setPlayers', null)
 				commit('setLoading', { isLoading: false, status: 'error' })
-				// console.log('Users loading error')
 			}
 		},
 	},

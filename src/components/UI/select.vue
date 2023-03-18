@@ -145,7 +145,6 @@ export default {
 					}
 					return result
 				default:
-					console.log('default', index)
 					return (row + 1) * 60
 			}
 		},
@@ -196,6 +195,8 @@ export default {
 	width: calc(var(--w) + 25px);
 	height: calc(var(--h) + 15px);
 	background: var(--main-text);
+	/* background: var(--bg-gray); */
+	/* background: #c6ccce; */
 	border-radius: 10px;
 	z-index: 100;
 }
@@ -231,6 +232,8 @@ export default {
 	list-style: none;
 	background: var(--dark-text);
 	color: var(--main-text);
+	/* background: var(--main-text);
+	color: var(--dark-text); */
 	border-radius: 5px;
 	user-select: none;
 	cursor: pointer;

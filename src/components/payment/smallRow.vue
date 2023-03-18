@@ -5,7 +5,7 @@
 		<div :class="{ done: row.done, searched: match(row.group) }">{{ row.group }}</div>
 		<div :class="{ done: row.done, searched: match(row.price) }">{{ row.price || '---' }}</div>
 		<div :class="{ done: row.done, searched: match(part) }">{{ part }}</div>
-		<div>
+		<div class="noselect">
 			<strong> {{ tax }}</strong>
 		</div>
 	</div>
@@ -55,7 +55,6 @@ export default {
 	width: 50vw;
 	display: grid;
 	grid-template-columns: 100px 150px 1fr repeat(2, 100px) 50px;
-	/* column-gap: 5px; */
 	color: var(--main-text);
 }
 .row > div {
@@ -64,8 +63,6 @@ export default {
 	align-items: center;
 	text-align: center;
 	padding: 10px 20px;
-	/* border: var(--main-text) solid 2px; */
-	/* border-radius: 10px; */
 	border: none;
 	border-bottom: 1px solid var(--main-text);
 	border-right: 1px solid var(--main-text);
@@ -83,5 +80,8 @@ export default {
 }
 .searched {
 	background: #4d83b5;
+}
+.noselect {
+	user-select: none;
 }
 </style>

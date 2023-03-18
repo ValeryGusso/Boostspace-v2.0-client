@@ -21,7 +21,7 @@
 		<div :class="{ done: row.done, searched: match(row.description) }">
 			<p>{{ row.description || '---' }}</p>
 		</div>
-		<div>
+		<div class="noselect">
 			<strong>
 				<p>{{ tax }}</p></strong
 			>
@@ -102,7 +102,11 @@ export default {
 	color: var(--green-text);
 }
 .searched {
-	background: #4d83b5;
-	/* background: var(--active-text); */
+	background: var(--bg-blue);
+	border-right: var(--main-text) solid 1px !important;
+	border-bottom: var(--main-text) solid 1px !important;
+}
+.noselect {
+	user-select: none;
 }
 </style>
