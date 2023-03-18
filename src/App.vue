@@ -3,8 +3,9 @@
 		<header-bar />
 	</header>
 	<div v-if="isLoaded" class="content">
-		<router-view v-if="$store.state.auth.isAuth && $store.state.auth.user.isAdmin" name="admin" />
-		<router-view v-if="$store.state.auth.isAuth && !$store.state.auth.user.isAdmin" name="auth" />
+		<router-view v-if="$store.state.auth.isAuth && $store.state.auth.user?.isAdmin" name="admin" />
+		<router-view v-if="$store.state.auth.isAuth && !$store.state.auth.user?.isAdmin" name="auth" />
+		<router-view v-if="$store.state.auth.isAuth && $store.state.auth.user?.isBanned" name="banned" />
 		<router-view v-if="!$store.state.auth.isAuth" name="unauth" />
 	</div>
 	<footer v-if="isLoaded">
@@ -39,19 +40,26 @@ export default {
 		footerBlock,
 	},
 	mounted() {
-		API.get('/auth/me')
-			.then(res => {
-				if (res.status === 200) {
-					this.$store.commit('auth/setUser', res.data.player)
-					this.$router.push('/home')
-				} else {
-					this.$store.commit('auth/setUser', null)
-					this.$router.push('/welcome')
-				}
-			})
-			.finally(() => {
-				this.isLoaded = true
-			})
+		if (localStorage.getItem('accessToken')) {
+			API.get('/auth/me')
+				.then(res => {
+					this.isLoaded = true
+					if (res.status === 200) {
+						this.$store.commit('auth/setUser', res.data.player)
+						// this.$store.dispatch('players/getPlayers')
+						this.$router.push('/home')
+					} else {
+						this.$store.commit('auth/setUser', null)
+						this.$router.push('/welcome')
+					}
+				})
+				.finally(() => {
+					this.isLoaded = true
+				})
+		} else {
+			this.$router.push('/welcome')
+			this.isLoaded = true
+		}
 	},
 }
 </script>
@@ -146,6 +154,7 @@ footer {
 	align-items: center;
 	justify-content: center;
 	overflow: hidden;
+	user-select: none;
 }
 .app__loading__img {
 	width: 50vw;
