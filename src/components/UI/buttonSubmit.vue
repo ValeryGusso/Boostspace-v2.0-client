@@ -46,8 +46,10 @@ export default {
 	background: none;
 	border: none;
 	border-bottom: 4px solid var(--main-text);
+	border-radius: 5px;
 	cursor: pointer;
 	transition: var(--fast-transition);
+	outline: none !important;
 }
 .container > button:hover {
 	width: var(--w);

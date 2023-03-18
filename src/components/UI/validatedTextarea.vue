@@ -127,7 +127,7 @@ export default {
 }
 .error {
 	position: absolute;
-	top: 62px;
+	top: 202px;
 	font-size: 20px;
 	color: var(--error);
 }
