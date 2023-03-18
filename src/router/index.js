@@ -130,6 +130,16 @@ import welcomePage from '@/pages/Welcome'
 
 const routes = [
 	{
+		path: '/',
+		name: 'home',
+		components: {
+			admin: homePage,
+			auth: homePage,
+			banned: homePage,
+			unauth: welcomePage,
+		},
+	},
+	{
 		path: '/home',
 		name: 'home',
 		components: {

@@ -48,14 +48,14 @@ export default {
 	mounted() {
 		this.$store.dispatch('players/getPlayers')
 
-		this.socket = new WebSocket('ws://localhost:666/')
+		this.socket = new WebSocket(process.env.VUE_APP_WS)
 
-		// this.socket.onopen = () => {
-		// 	console.log('WebSocket UP')
-		// }
-		// this.socket.onclose = () => {
-		// 	console.log('WebSocket DOWN')
-		// }
+		this.socket.onopen = () => {
+			console.log('WebSocket UP')
+		}
+		this.socket.onclose = () => {
+			console.log('WebSocket DOWN')
+		}
 		this.socket.onmessage = msg => {
 			if (msg.data === 'updated') {
 				this.$store.dispatch('players/getPlayers')
