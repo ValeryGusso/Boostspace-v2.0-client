@@ -61,10 +61,6 @@ export default {
 			document.body.style.overflow = 'hidden'
 		},
 		scroll(e) {
-			if (e.target.dataset.stopscroll) {
-				return
-			}
-
 			const dy = e.wheelDeltaY
 
 			if (dy > 0) {
@@ -75,17 +71,21 @@ export default {
 					}
 					document.body.style.overflow = 'hidden'
 				}
-			} else {
-				if (this.offset === 0) {
-					this.offset = 10
-					document.body.style.overflow = null
-				}
+			}
+
+			if (e.target.dataset.stopscroll) {
+				return
+			}
+
+			if (this.offset === 0) {
+				this.offset = 10
+				document.body.style.overflow = null
 			}
 		},
 	},
 	mounted() {
 		document.body.style.overflow = 'hidden'
-		
+
 		window.addEventListener('wheel', e => {
 			debounce(() => this.scroll(e), 100)
 		})

@@ -86,10 +86,10 @@ export default {
 	border: 2px solid transparent !important;
 }
 .finder > ul > li:nth-child(2n):hover {
-	transform: translateX(15px);
+	transform: translateX(10px);
 }
 .finder > ul > li:nth-child(2n + 1):hover {
-	transform: translateX(-15px);
+	transform: translateX(-10px);
 }
 .searched {
 	color: var(--dark-text) !important;

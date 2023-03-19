@@ -34,13 +34,13 @@ import loadSpinner from '@/components/UI/loader.vue'
 import { searchQuery, orderQuery } from '@/assets/constants'
 import { API } from '@/axios/API'
 import { getPart } from '@/utils/calculate'
+import { debounce } from '@/utils/debounce'
 
 export default {
 	data() {
 		return {
 			data: null,
 			isLoading: true,
-			timer: null,
 			searchOptions: {
 				type: searchQuery[7],
 				search: '',
@@ -64,13 +64,9 @@ export default {
 			}
 		},
 		setSearch(search) {
-			if (this.timer) {
-				clearTimeout(this.timer)
-			}
-			this.timer = setTimeout(() => {
+			debounce(() => {
 				this.searchOptions = search
-				this.timer = null
-			}, 350)
+			}, 500)
 		},
 	},
 	computed: {

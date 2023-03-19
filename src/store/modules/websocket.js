@@ -21,7 +21,9 @@ export default {
 			}
 		},
 		clear(state) {
-			state.socket.close()
+			if (state.socket) {
+				state.socket.close()
+			}
 			state.socket = null
 			state.connection = false
 		},
