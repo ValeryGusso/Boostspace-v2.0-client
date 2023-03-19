@@ -1,8 +1,8 @@
 <template>
 	<header v-if="isLoaded">
-		<header-bar :offset="offset" />
+		<header-bar @menuClick="menuClick" :offset="offset" />
 	</header>
-	<div v-if="isLoaded" :class="{ content: true, stopscroll: offset !== 10 }">
+	<div v-if="isLoaded" :class="{ content: true, stopscroll: offset !== 10 }" data-scroll="true">
 		<router-view
 			@updateData="updateData"
 			v-if="$store.state.auth.isAuth && $store.state.auth.user?.isAdmin"
@@ -48,28 +48,35 @@ export default {
 			isLoaded: false,
 			socket: null,
 			connectionLost: true,
-			// scroll
-			stopScroll: false,
 			offset: 0,
-			prev: 0,
-			direction: 'down',
 		}
 	},
 	methods: {
 		updateData() {
 			this.$store.state.websocket.socket.send('updated')
 		},
+		menuClick() {
+			this.offset = 0
+			window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
+			document.body.style.overflow = 'hidden'
+		},
 		scroll(e) {
+			if (e.target.dataset.stopscroll) {
+				return
+			}
+
 			const dy = e.wheelDeltaY
+
 			if (dy > 0) {
-				if (this.offset > 0) {
+				if (this.offset !== 0) {
 					this.offset = 0
+					if (window.scrollY > 0) {
+						window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
+					}
 					document.body.style.overflow = 'hidden'
 				}
 			} else {
 				if (this.offset === 0) {
-					this.offset += 5
-				} else {
 					this.offset = 10
 					document.body.style.overflow = null
 				}
@@ -78,8 +85,9 @@ export default {
 	},
 	mounted() {
 		document.body.style.overflow = 'hidden'
+		
 		window.addEventListener('wheel', e => {
-			debounce(() => this.scroll(e), 50)
+			debounce(() => this.scroll(e), 100)
 		})
 
 		this.$store.commit('websocket/connect')

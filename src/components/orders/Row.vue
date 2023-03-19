@@ -1,29 +1,29 @@
 <template>
 	<div class="row">
-		<div :class="{ done: row.done }">
-			<p>{{ row.date }}</p>
+		<div data-stopscroll="true" :class="{ done: row.done }">
+			<p data-stopscroll="true">{{ row.date }}</p>
 		</div>
-		<div :class="{ done: row.done, searched: match(row.type) }">
-			<p>{{ row.type }}</p>
+		<div data-stopscroll="true" :class="{ done: row.done, searched: match(row.type) }">
+			<p data-stopscroll="true">{{ row.type }}</p>
 		</div>
-		<div :class="{ done: row.done, searched: match(row.group) }">
-			<p>{{ row.group }}</p>
+		<div data-stopscroll="true" :class="{ done: row.done, searched: match(row.group) }">
+			<p data-stopscroll="true">{{ row.group }}</p>
 		</div>
-		<div :class="{ done: row.done, searched: match(row.price) }">
-			<p>{{ row.price || '---' }}</p>
+		<div data-stopscroll="true" :class="{ done: row.done, searched: match(row.price) }">
+			<p data-stopscroll="true">{{ row.price || '---' }}</p>
 		</div>
-		<div :class="{ done: row.done, searched: match(part) }">
-			<p>{{ part }}</p>
+		<div data-stopscroll="true" :class="{ done: row.done, searched: match(part) }">
+			<p data-stopscroll="true">{{ part }}</p>
 		</div>
-		<div :class="{ done: row.done, searched: match(row.number) }">
-			<p>{{ row.number || '---' }}</p>
+		<div data-stopscroll="true" :class="{ done: row.done, searched: match(row.number) }">
+			<p data-stopscroll="true">{{ row.number || '---' }}</p>
 		</div>
-		<div :class="{ done: row.done, searched: match(row.description) }">
-			<p>{{ row.description || '---' }}</p>
+		<div data-stopscroll="true" :class="{ done: row.done, searched: match(row.description) }">
+			<p data-stopscroll="true">{{ row.description || '---' }}</p>
 		</div>
-		<div class="noselect">
+		<div data-stopscroll="true" class="noselect">
 			<strong>
-				<p>{{ tax }}</p></strong
+				<p data-stopscroll="true">{{ tax }}</p></strong
 			>
 		</div>
 	</div>

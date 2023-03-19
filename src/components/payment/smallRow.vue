@@ -1,12 +1,12 @@
 <template>
 	<div class="row">
-		<div :class="{ done: row.done }">{{ row.date }}</div>
-		<div :class="{ done: row.done, searched: match(row.type) }">{{ row.type }}</div>
-		<div :class="{ done: row.done, searched: match(row.group) }">{{ row.group }}</div>
-		<div :class="{ done: row.done, searched: match(row.price) }">{{ row.price || '---' }}</div>
-		<div :class="{ done: row.done, searched: match(part) }">{{ part }}</div>
-		<div class="noselect">
-			<strong> {{ tax }}</strong>
+		<div data-stopscroll="true" :class="{ done: row.done }">{{ row.date }}</div>
+		<div data-stopscroll="true" :class="{ done: row.done, searched: match(row.type) }">{{ row.type }}</div>
+		<div data-stopscroll="true" :class="{ done: row.done, searched: match(row.group) }">{{ row.group }}</div>
+		<div data-stopscroll="true" :class="{ done: row.done, searched: match(row.price) }">{{ row.price || '---' }}</div>
+		<div data-stopscroll="true" :class="{ done: row.done, searched: match(part) }">{{ part }}</div>
+		<div data-stopscroll="true" class="noselect">
+			<strong data-stopscroll="true"> {{ tax }}</strong>
 		</div>
 	</div>
 </template>

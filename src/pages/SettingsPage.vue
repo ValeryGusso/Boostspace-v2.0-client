@@ -1,6 +1,6 @@
 <template>
 	<div class="settings__container">
-		<div class="personal">
+		<div class="personal" data-scroll="true">
 			<p class="title">Личная информация.</p>
 			<div>
 				<div>
@@ -73,7 +73,7 @@
 				/>
 			</div>
 		</div>
-		<div class="game">
+		<div class="game" data-scroll="true">
 			<p class="title">Общая информация.</p>
 			<div>
 				<select-bar

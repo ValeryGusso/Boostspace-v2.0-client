@@ -33,7 +33,7 @@
 				}"
 			/>
 		</div>
-		<div v-if="!loading" class="calculator__content">
+		<div v-if="!loading" class="calculator__content" data-scroll="true">
 			<div v-if="data" class="calculator__info">
 				<p>
 					За указанный период я сходил в <span>{{ totalMyOrders }}</span> заказ(а/ов) и заработал
@@ -48,8 +48,8 @@
 					</div>
 					<div class="calculator__tables__scroll__wrapper table table__scrollbar">
 						<div class="calculator__payments__row" v-for="player in payments">
-							<p>{{ player.name }}</p>
-							<p>{{ player.summ.toFixed(2) }}$</p>
+							<p data-stopscroll="true">{{ player.name }}</p>
+							<p data-stopscroll="true">{{ player.summ.toFixed(2) }}$</p>
 						</div>
 					</div>
 				</div>

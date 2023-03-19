@@ -1,6 +1,6 @@
 <template>
 	<div class="admin">
-		<div class="invite">
+		<div class="invite" data-scroll="true">
 			<p class="invite__title">
 				{{
 					invite.value
@@ -65,7 +65,7 @@
 				<p v-if="invite.value" @click="resetInvite" class="reset">Сбросить</p>
 			</div>
 		</div>
-		<div class="userpanel">
+		<div class="userpanel" data-scroll="true">
 			<div class="userpanel__list">
 				<user-panel
 					@changeUser="changeUser"

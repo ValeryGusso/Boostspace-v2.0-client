@@ -2,8 +2,8 @@
 	<div class="container" :style="{ background: isOpen ? 'black' : 'transparent' }">
 		<inline-svg @click="isOpen = !isOpen" class="menu__icon" :src="isOpen ? menuClose : menuOpen"></inline-svg>
 		<p class="menu__logo">Boostspace {{ $store.state.auth.msg }}</p>
-		<ul @mouseenter="resetTimeout" @mouseleave="hide" class="menu__list" :class="isOpen && isActive ? 'open' : 'close'">
-			<li @mouseenter="resetTimeout" @click="isOpen = false" v-for="item in list" :key="item.path">
+		<ul class="menu__list" :class="isOpen && isActive ? 'open' : 'close'">
+			<li @click="click" v-for="item in list" :key="item.path">
 				<router-link :to="item.path">
 					<inline-svg class="menu__list__svg" :src="item.image"></inline-svg>
 					{{ item.title }}</router-link
@@ -24,23 +24,12 @@ export default {
 			menuOpen,
 			menuClose,
 			isOpen: false,
-			timer: null,
 		}
 	},
 	methods: {
-		hide() {
-			// if (this.timer) {
-			// 	this.resetTimer()
-			// }
-			// this.timer = setTimeout(() => {
-			// 	this.isOpen = false
-			// }, 3000)
-		},
-		resetTimer() {
-			// if (this.timer) {
-			// 	clearTimeout(this.timer)
-			// 	this.timer = null
-			// }
+		click() {
+			this.isOpen = false
+			this.$emit('menuClick')
 		},
 	},
 	props: {

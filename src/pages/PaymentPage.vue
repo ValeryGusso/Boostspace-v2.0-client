@@ -25,10 +25,10 @@
 						</li>
 					</div>
 					<div class="period__payments__data table table__scrollbar">
-						<li v-for="player in data" :key="player.name">
-							<p>{{ player.name }}</p>
-							<p>{{ setPaymentOverall(player) }}</p>
-							<p>{{ calculatePaid(player) }}</p>
+						<li data-stopscroll="true" v-for="player in data" :key="player.name">
+							<p data-stopscroll="true">{{ player.name }}</p>
+							<p data-stopscroll="true">{{ setPaymentOverall(player) }}</p>
+							<p data-stopscroll="true">{{ calculatePaid(player) }}</p>
 						</li>
 					</div>
 				</ul>
