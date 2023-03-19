@@ -30,7 +30,6 @@ export default {
 	data() {
 		return {
 			searched: [],
-			socket: null,
 		}
 	},
 	methods: {
@@ -42,31 +41,11 @@ export default {
 			}
 		},
 		updateData() {
-			this.socket.send('updated')
+			this.$emit('updateData')
 		},
 	},
 	mounted() {
 		this.$store.dispatch('players/getPlayers')
-
-		this.socket = new WebSocket(process.env.VUE_APP_WS)
-
-		this.socket.onopen = () => {
-			console.log('WebSocket UP')
-		}
-		this.socket.onclose = () => {
-			console.log('WebSocket DOWN')
-		}
-		this.socket.onmessage = msg => {
-			if (msg.data === 'updated') {
-				this.$store.dispatch('players/getPlayers')
-			}
-		}
-	},
-	unmounted() {
-		if (this.socket) {
-			this.socket.close()
-			this.socket = null
-		}
 	},
 	components: {
 		GroupModule,

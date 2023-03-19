@@ -1,10 +1,9 @@
 <template>
-	<div
-		@mouseenter="isActive = true"
-		@mouseleave="isActive = false"
-		:class="{ container__header: true, container__header__show: isActive }"
-	>
-		<menu-nav :list="getMenuList()" :isActive="isActive" />
+	<!-- @mouseenter="isActive = true"
+	@mouseleave="isActive = false" -->
+	<!-- :class="{ container__header: true, container__header__show: isActive }" -->
+	<div class="container__header" :style="{ '--offset': `${offset}vh` }">
+		<menu-nav :list="getMenuList()" :isActive="offset > 5" />
 		<div v-if="$store.state.auth.isAuth" class="user__menu">
 			<img draggable="false" src="@/assets/img/default_ava.jpg" alt="avatar" />
 			<p class="name">{{ $store.state.auth.user?.name || 'Unnamed user' }}</p>
@@ -29,7 +28,7 @@ export default {
 			menuAuthList,
 			menuUnauthList,
 			loading: false,
-			isActive: false,
+			// isActive: false,
 		}
 	},
 	methods: {
@@ -62,6 +61,9 @@ export default {
 			}
 		},
 	},
+	props: {
+		offset: { type: Number },
+	},
 	components: {
 		MenuNav,
 	},
@@ -73,19 +75,21 @@ export default {
 	height: 10vh;
 	display: flex;
 	justify-content: space-between;
-	background: var(--active-text);
-	border-bottom: 3px solid transparent;
+	/* background: var(--active-text); */
+	/* border-bottom: 3px solid transparent; */
+	background: rgba(0, 0, 0, 0.75);
 	transform: translateY(-9vh);
-	transition: transform var(--fast-transition) 0s, background-color var(--fast-transition) var(--fast-transition),
-		border-bottom var(--fast-transition) var(--fast-transition);
+	transform: translateY(calc(-10vh + var(--offset)));
+	transition: var(--fast-transition);
+	/* transition: transform var(--fast-transition) 0s, background-color var(--fast-transition) var(--fast-transition),
+		border-bottom var(--fast-transition) var(--fast-transition); */
 	z-index: 1000;
 }
-.container__header__show {
-	background: rgba(0, 0, 0, 0.75);
+/* .container__header__show {
 	border-bottom: 3px solid var(--main-text);
 	transition: transform var(--fast-transition), border-bottom var(--fast-transition);
 	transform: translateY(0);
-}
+} */
 .user__menu {
 	display: flex;
 	padding-right: 50px;

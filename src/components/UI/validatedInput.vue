@@ -4,23 +4,22 @@
 			@focus="focus"
 			@blur="blur"
 			ref="input"
-			:id="id"
+			:name="options.autocomplete || ''"
+			:autocomplete="options.autocomplete ? 'on' : 'off'"
 			:class="{ focus: isActive, input__error: options.isError }"
-			:type="showPass || options.type === 'text' ? 'text' : 'password'"
+			:type="showPass || options.type !== 'password' ? options.type : 'password'"
 			:tabindex="options.tabindex"
 			:style="{ paddingRight: options.type === 'password' ? '45px' : '' }"
 			:value="$attrs.value"
 			@input="change"
 		/>
 		<inline-svg @click="click" class="icon" :src="options.image" />
-		<!-- <label :for="id"> -->
 		<inline-svg
 			v-if="options.type === 'password'"
 			@click="setPassVisible"
 			class="eye"
 			:src="showPass ? eyeOffImage : eyeImage"
 		/>
-		<!-- </label> -->
 		<p @click="click" :class="isActive ? 'active' : ''" class="placeholder">{{ options.placeholder }}</p>
 		<p class="error" v-if="options.isError">{{ options.errorMessage }}</p>
 	</div>
@@ -37,7 +36,6 @@ export default {
 			showPass: false,
 			isActive: false,
 			onFocus: false,
-			id: Math.random(),
 			eyeImage,
 			eyeOffImage,
 		}
@@ -108,6 +106,10 @@ export default {
 .input__error {
 	background: rgba(233, 72, 85, 0.4) !important;
 	border: 4px solid var(--error) !important;
+	animation: tremor 0.5s ease-in-out 0s 1 normal forwards;
+}
+.input__error ~ .placeholder,
+.input__error ~ .icon {
 	animation: tremor 0.5s ease-in-out 0s 1 normal forwards;
 }
 .focus {
@@ -185,5 +187,13 @@ export default {
 	100% {
 		transform: translateX(0px);
 	}
+}
+.container > input[type='search']::-webkit-search-decoration,
+.container > input[type='search']::-webkit-search-cancel-button,
+.container > input[type='search']::-webkit-search-results-button,
+.container > input[type='search']::-webkit-search-results-decoration {
+	transform: translate(-5px, -15px) scale(1.5);
+	cursor: pointer;
+	z-index: 1001;
 }
 </style>

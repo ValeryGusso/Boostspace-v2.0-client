@@ -1,11 +1,23 @@
 <template>
 	<header v-if="isLoaded">
-		<header-bar />
+		<header-bar :offset="offset" />
 	</header>
-	<div v-if="isLoaded" class="content">
-		<router-view v-if="$store.state.auth.isAuth && $store.state.auth.user?.isAdmin" name="admin" />
-		<router-view v-if="$store.state.auth.isAuth && !$store.state.auth.user?.isAdmin" name="auth" />
-		<router-view v-if="$store.state.auth.isAuth && $store.state.auth.user?.isBanned" name="banned" />
+	<div v-if="isLoaded" :class="{ content: true, stopscroll: offset !== 10 }">
+		<router-view
+			@updateData="updateData"
+			v-if="$store.state.auth.isAuth && $store.state.auth.user?.isAdmin"
+			name="admin"
+		/>
+		<router-view
+			@updateData="updateData"
+			v-if="$store.state.auth.isAuth && !$store.state.auth.user?.isAdmin"
+			name="auth"
+		/>
+		<router-view
+			@updateData="updateData"
+			v-if="$store.state.auth.isAuth && $store.state.auth.user?.isBanned"
+			name="banned"
+		/>
 		<router-view v-if="!$store.state.auth.isAuth" name="unauth" />
 	</div>
 	<footer v-if="isLoaded">
@@ -16,37 +28,79 @@
 		<img class="app__loading__img second" src="@/assets/img/loading.gif" alt="loading" draggable="false" />
 		<p class="app__loading__text">Идёт загрузка пользователя, ожидайте...</p>
 	</div>
+	<connection-lost v-if="isLoaded && !$store.state.websocket.connection" />
+	<!-- <connection-lost v-if="true" /> -->
 </template>
 
 <script>
 import HeaderBar from '@/components/header/Header.vue'
 import loginPage from '@/pages/Login.vue'
 import registrationPage from '@/pages/Registration.vue'
+import connectionLost from './components/UI/connectionLost.vue'
 import SettingsPage from '@/pages/SettingsPage.vue'
 import footerBlock from './components/footer/footer.vue'
 import { API } from '@/axios/API'
+import { debounce } from './utils/debounce'
 
 export default {
 	data() {
 		return {
 			isLoaded: false,
+			socket: null,
+			connectionLost: true,
+			// scroll
+			stopScroll: false,
+			offset: 0,
+			prev: 0,
+			direction: 'down',
 		}
 	},
-	components: {
-		HeaderBar,
-		loginPage,
-		registrationPage,
-		SettingsPage,
-		footerBlock,
+	methods: {
+		updateData() {
+			this.$store.state.websocket.socket.send('updated')
+		},
+		scroll(e) {
+			const dy = e.wheelDeltaY
+			if (dy > 0) {
+				if (this.offset > 0) {
+					this.offset = 0
+					document.body.style.overflow = 'hidden'
+				}
+			} else {
+				if (this.offset === 0) {
+					this.offset += 5
+				} else {
+					this.offset = 10
+					document.body.style.overflow = null
+				}
+			}
+		},
 	},
 	mounted() {
+		document.body.style.overflow = 'hidden'
+		window.addEventListener('wheel', e => {
+			debounce(() => this.scroll(e), 50)
+		})
+
+		this.$store.commit('websocket/connect')
+
+		this.$store.state.websocket.socket.onmessage = msg => {
+			switch (msg.data) {
+				case 'updated':
+					this.$store.dispatch('players/getPlayers')
+					break
+				case 'ban':
+					this.$store.dispatch('auth/updateMe')
+					break
+			}
+		}
+
 		if (localStorage.getItem('accessToken')) {
 			API.get('/auth/me')
 				.then(res => {
 					this.isLoaded = true
 					if (res.status === 200) {
 						this.$store.commit('auth/setUser', res.data.player)
-						// this.$store.dispatch('players/getPlayers')
 						this.$router.push('/home')
 					} else {
 						this.$store.commit('auth/setUser', null)
@@ -60,6 +114,14 @@ export default {
 			this.$router.push('/welcome')
 			this.isLoaded = true
 		}
+	},
+	components: {
+		HeaderBar,
+		loginPage,
+		registrationPage,
+		SettingsPage,
+		footerBlock,
+		connectionLost,
 	},
 }
 </script>
@@ -125,6 +187,9 @@ footer {
 	width: 100%;
 	height: 15vh;
 	background: rgba(0, 0, 0, 0.5);
+}
+.stopscroll {
+	overflow: hidden;
 }
 .table > *:nth-child(2n) {
 	background: var(--bg-opacity-first);

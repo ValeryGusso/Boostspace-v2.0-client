@@ -36,21 +36,23 @@
 				/>
 				<group-picker v-model="invite.group" />
 			</div>
-			<textarea
-				@click="sendCode"
-				:class="{ active: invite.status === 'success', button: invite.status === 'init' }"
-				:value="setInviteValue()"
-				readonly
-			>
-			</textarea>
-			<inline-svg
-				v-if="invite.status === 'success'"
-				@click="copyInvite"
-				class="invite__copy"
-				:src="copyfile"
-				title="Копировать"
-			/>
-			<p :class="{ invite__copy__text: true, invite__copy__text__active: isCopied }">Скопировано!</p>
+			<div class="textarea__wrapper">
+				<textarea
+					@click="sendCode"
+					:class="{ active: invite.status === 'success', button: invite.status === 'init' }"
+					:value="setInviteValue()"
+					readonly
+				>
+				</textarea>
+				<inline-svg
+					v-if="invite.status === 'success'"
+					@click="copyInvite"
+					class="invite__copy"
+					:src="copyfile"
+					title="Копировать"
+				/>
+				<p :class="{ invite__copy__text: true, invite__copy__text__active: isCopied }">Скопировано!</p>
+			</div>
 			<div class="invite__info">
 				<p v-if="countdown" class="timer">
 					Код действителен ещё <br />
@@ -226,6 +228,7 @@ export default {
 			}
 		},
 		async sendUpdate() {
+			let someOneWasBanned = false
 			const promises = []
 			this.updateLoading = true
 			this.userUpdateData.forEach(user => {
@@ -243,6 +246,7 @@ export default {
 				}
 				if (user.originalIsBanned !== user.isBanned) {
 					payload.isBanned = user.isBanned
+					someOneWasBanned = true
 				}
 
 				promises.push(API.post('/users/admin', payload))
@@ -270,7 +274,13 @@ export default {
 						break
 				}
 			})
+
+			if (someOneWasBanned) {
+				this.$store.state.websocket.socket.send('ban')
+			}
+
 			this.updateLoading = false
+
 			setTimeout(() => {
 				this.userUpdateData = this.userUpdateData.filter(user => !user.updateError && !user.wasUpdated)
 				this.$store.dispatch('players/getPlayers')
@@ -329,7 +339,6 @@ export default {
 	align-items: center;
 	padding-top: 5vh;
 	row-gap: 35px;
-	border: 1px solid white;
 }
 .invite__title {
 	max-width: 500px;
@@ -342,7 +351,10 @@ export default {
 	display: flex;
 	justify-content: space-around;
 }
-.invite > textarea {
+.textarea__wrapper {
+	position: relative;
+}
+.invite textarea {
 	width: 400px;
 	height: 50px;
 	border-radius: 20px;
@@ -355,7 +367,7 @@ export default {
 	transition: var(--fast-transition);
 	cursor: pointer;
 }
-.invite > textarea::selection {
+.invite textarea::selection {
 	color: var(--main-text);
 	background-color: var(--dark-text);
 }
@@ -363,19 +375,20 @@ export default {
 	position: absolute;
 	width: 50px;
 	height: 50px;
-	top: 400px;
-	left: 470px;
+	top: 240px;
+	left: 340px;
 	cursor: pointer;
 	filter: opacity(0.25);
 	transition: var(--fast-transition);
+	z-index: 10;
 }
 .invite__copy:hover {
 	filter: opacity(1);
 }
 .invite__copy__text {
 	position: absolute;
-	top: 415px;
-	left: 300px;
+	top: 255px;
+	left: 170px;
 	font-size: 24px;
 	color: var(--dark-text);
 	filter: opacity(0);

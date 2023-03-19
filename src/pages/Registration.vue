@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-		<form action="submit">
+		<form action="submit" autocomplete="on">
 			<p class="form__title">{{ isActivate ? 'Activation' : 'Registration' }}</p>
 			<div v-if="!isActivate" class="inputs">
 				<div>
@@ -14,6 +14,7 @@
 							isError: login.error,
 							errorMessage: login.errorMessage,
 							image: login.image,
+							autocomplete: 'email',
 						}"
 					/>
 					<validated-input

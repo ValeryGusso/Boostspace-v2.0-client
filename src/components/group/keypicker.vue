@@ -90,9 +90,9 @@ export default {
 		height() {
 			switch (this.options.type) {
 				case 'key':
-					return '340px'
+					return '280px'
 				case 'lvl':
-					return '460px'
+					return '380px'
 				default:
 					return null
 			}
@@ -129,11 +129,14 @@ export default {
 }
 .keypicker__title:hover {
 	background: var(--bg-blue);
+	font-size: 26px;
+	color: var(--dark-text) !important;
 }
 .keypicker__item {
 	width: 75px;
-	height: 50px;
+	height: 40px;
 	background: var(--dark-text);
+	border-radius: 5px;
 	transform: scale(0);
 }
 .keypicker__item__clear {

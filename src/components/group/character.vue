@@ -4,7 +4,7 @@
 			data-type="character"
 			class="character_class disabled"
 			:style="{
-				color: isSearched ? 'var(--dark-text)' : setClassColor(type),
+				color: isSearched ? 'var(--dark-text)' : showClass === '---' ? 'var(--main-text)' : setClassColor(type),
 				background: isSearched ? setColor : 'none',
 			}"
 		>
@@ -68,12 +68,6 @@ export default {
 	},
 	methods: {
 		setClassColor(className) {
-			if (this.searched.includes(this.keyName)) {
-				return searchedColors[this.searched.indexOf(this.keyName)]
-			}
-			if (className === '---') {
-				return 'var(--main-text)'
-			}
 			for (let i = 0; i < classColors.length; i++) {
 				if (classColors[i].title.toLowerCase() === className.toLowerCase()) {
 					return classColors[i].color
@@ -165,19 +159,18 @@ export default {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	border-bottom: 1px solid var(--main-text);
-	border-right: 1px solid var(--main-text);
+	border-bottom: 1px solid var(--main-text) !important;
+	border-right: 1px solid var(--main-text) !important;
 	font-size: 20px;
 }
 .character > p:last-child,
 .character > div:last-child {
-	border-right: none;
+	border-right: none !important;
 }
 .character > p:first-child {
 	border-left: 1px solid var(--main-text);
 }
 .character_class {
-	/* filter: drop-shadow(1px 1px 4px white); */
 	color: var(--main-text);
 }
 .disabled {

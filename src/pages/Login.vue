@@ -12,6 +12,7 @@
 					isError: login.error,
 					errorMessage: login.errorMessage,
 					image: login.image,
+					autocomplete: 'email',
 				}"
 			/>
 			<validated-input

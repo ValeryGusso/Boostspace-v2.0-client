@@ -14,6 +14,7 @@
 							isError: name.error,
 							errorMessage: name.errorMessage,
 							image: name.image,
+							autocomplete: 'name',
 						}"
 					/>
 					<validated-textarea

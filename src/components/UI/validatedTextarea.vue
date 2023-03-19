@@ -62,7 +62,6 @@ export default {
 .container {
 	position: relative;
 	width: 400px;
-	/* height: 100%; */
 	height: 60px;
 	display: flex;
 }

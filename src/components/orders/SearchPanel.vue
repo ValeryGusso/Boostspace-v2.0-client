@@ -14,12 +14,13 @@
 		<validated-input
 			v-model:value="search.value"
 			:options="{
-				type: 'text',
+				type: 'search',
 				placeholder: 'Что ищем?',
 				tabindex: 1,
 				isError: search.error,
 				errorMessage: search.errorMessage,
 				image: search.image,
+				autocomplete: 'search',
 			}"
 		/>
 		<select-bar
