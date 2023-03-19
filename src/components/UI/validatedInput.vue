@@ -7,7 +7,7 @@
 			:name="options.autocomplete || ''"
 			:autocomplete="options.autocomplete ? 'on' : 'off'"
 			:class="{ focus: isActive, input__error: options.isError }"
-			:type="showPass || options.type !== 'password' ? options.type : 'password'"
+			:type="showPass && options.type === 'password' ? 'text' : options.type"
 			:tabindex="options.tabindex"
 			:style="{ paddingRight: options.type === 'password' ? '45px' : '' }"
 			:value="$attrs.value"
@@ -67,6 +67,7 @@ export default {
 				this.$refs.input.focus()
 			}
 			this.isActive = true
+			console.log(this.showPass)
 		},
 		change(e) {
 			this.$emit('update:value', e.target.value)
@@ -98,7 +99,7 @@ export default {
 	outline: none;
 	color: var(--main-text);
 	font-size: 26px;
-	border-radius: 5px;
+	border-radius: 5px !important;
 	border: 4px solid transparent;
 	border-bottom: 4px solid var(--main-text);
 	transition: var(--fast-transition);

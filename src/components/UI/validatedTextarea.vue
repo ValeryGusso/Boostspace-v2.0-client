@@ -84,6 +84,11 @@ export default {
 .input__error {
 	background: rgba(233, 72, 85, 0.4) !important;
 	border: 4px solid var(--error) !important;
+	animation: tremor 0.5s ease-in-out 0s 1 normal forwards;
+}
+.input__error ~ .placeholder,
+.input__error ~ .icon {
+	animation: tremor 0.5s ease-in-out 0s 1 normal forwards;
 }
 .focus {
 	border-radius: 10px;
@@ -129,5 +134,25 @@ export default {
 	top: 202px;
 	font-size: 20px;
 	color: var(--error);
+}
+@keyframes tremor {
+	0% {
+		transform: translateX(0px);
+	}
+	20% {
+		transform: translateX(30px);
+	}
+	40% {
+		transform: translateX(-23px);
+	}
+	60% {
+		transform: translateX(12px);
+	}
+	80% {
+		transform: translateX(-7px);
+	}
+	100% {
+		transform: translateX(0px);
+	}
 }
 </style>

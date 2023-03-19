@@ -71,15 +71,14 @@ export default {
 					}
 					document.body.style.overflow = 'hidden'
 				}
-			}
-
-			if (e.target.dataset.stopscroll) {
-				return
-			}
-
-			if (this.offset === 0) {
-				this.offset = 10
-				document.body.style.overflow = null
+			} else {
+				if (e.target.dataset.stopscroll) {
+					return
+				}
+				if (this.offset < 10) {
+					this.offset = 10
+					document.body.style.overflow = null
+				}
 			}
 		},
 	},
