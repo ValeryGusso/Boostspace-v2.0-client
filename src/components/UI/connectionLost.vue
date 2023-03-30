@@ -31,11 +31,18 @@ export default {
 				this.active = false
 			}, 10_000)
 			this.$store.commit('websocket/clear')
-			this.$store.commit('websocket/connect')
+			this.connectToWS()
+		},
+		connectToWS() {
+			this.$store.commit('websocket/connect', this.connectToWS.bind(this))
+			this.$store.commit('websocket/setHandler', this.WShandler.bind(this))
 		},
 	},
 	components: {
 		inlineSvg,
+	},
+	props: {
+		WShandler: { type: Function },
 	},
 }
 </script>

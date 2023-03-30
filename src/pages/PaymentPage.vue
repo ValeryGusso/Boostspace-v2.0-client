@@ -200,15 +200,6 @@ export default {
 .period > p {
 	cursor: default;
 }
-.period > p > span {
-	cursor: pointer;
-	text-decoration: underline 2px solid var(--main-text);
-	transition: var(--fast-transition);
-}
-.period > p > span:hover {
-	cursor: pointer;
-	text-decoration: underline 3px solid yellowgreen;
-}
 .period__payments ul {
 	max-height: calc(100% - 100px);
 	display: flex;
@@ -219,25 +210,27 @@ export default {
 .period__payments__data {
 	overflow-y: auto;
 }
-.period__payments__title > li > p {
-	border-bottom: none !important;
-}
 .period__payments ul > div > li {
 	width: 450px;
 	display: grid;
 	grid-template-columns: 1fr 150px 150px;
 	transition: var(--fast-transition);
+	overflow: hidden;
+	border-bottom: 1px solid var(--main-text);
 }
 .period__payments ul > div > li > p {
+	max-width: calc(450px / 3);
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	padding: 10px 15px;
+	padding: 10px 0;
 	font-size: 24px;
 	color: var(--main-text);
-	border-bottom: 1px solid var(--main-text);
 	border-right: 1px solid var(--main-text);
+}
+.period__payments ul > div > li:last-child {
+	border-bottom: none !important;
 }
 .period__payments ul > div > li > p:last-child {
 	border-right: none;

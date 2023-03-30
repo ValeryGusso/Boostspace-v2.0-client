@@ -19,6 +19,9 @@ export default {
 			if (this.options.prevent) {
 				e.preventDefault()
 			}
+			if (this.isLoading) {
+				return
+			}
 			this.options.handler()
 		},
 	},
@@ -35,6 +38,7 @@ export default {
 	height: 100%;
 	display: flex;
 	justify-content: center;
+	border-radius: 5px;
 }
 .container > button {
 	width: var(--d);
@@ -53,15 +57,16 @@ export default {
 }
 .container > button:hover {
 	width: var(--w);
-	border-radius: 5px;
 	background: var(--main-text);
 	color: var(--dark-text);
 }
 .loading {
 	position: relative;
+	cursor: default;
 	background: var(--main-text);
 }
 .loading > button {
+	cursor: default;
 	color: var(--dark-text) !important;
 }
 .loading::after {

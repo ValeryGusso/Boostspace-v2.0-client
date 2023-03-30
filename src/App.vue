@@ -28,7 +28,7 @@
 		<img class="app__loading__img second" src="@/assets/img/loading.gif" alt="loading" draggable="false" />
 		<p class="app__loading__text">Идёт загрузка пользователя, ожидайте...</p>
 	</div>
-	<connection-lost v-if="isLoaded && !$store.state.websocket.connection" />
+	<connection-lost :WShandler="WShandler" v-if="isLoaded && !$store.state.websocket.connection" />
 	<!-- <connection-lost v-if="true" /> -->
 </template>
 
@@ -49,6 +49,7 @@ export default {
 			socket: null,
 			connectionLost: true,
 			offset: 0,
+			id: null,
 		}
 	},
 	methods: {
@@ -81,17 +82,7 @@ export default {
 				}
 			}
 		},
-	},
-	mounted() {
-		document.body.style.overflow = 'hidden'
-
-		window.addEventListener('wheel', e => {
-			debounce(() => this.scroll(e), 100)
-		})
-
-		this.$store.commit('websocket/connect')
-
-		this.$store.state.websocket.socket.onmessage = msg => {
+		WShandler(msg) {
 			switch (msg.data) {
 				case 'updated':
 					this.$store.dispatch('players/getPlayers')
@@ -100,7 +91,26 @@ export default {
 					this.$store.dispatch('auth/updateMe')
 					break
 			}
-		}
+		},
+		connectToWS() {
+			this.$store.commit('websocket/connect', this.connectToWS.bind(this))
+			this.$store.commit('websocket/setHandler', this.WShandler.bind(this))
+		},
+	},
+	mounted() {
+		document.body.style.overflow = 'hidden'
+
+		window.addEventListener('wheel', e => {
+			debounce(() => this.scroll(e), 100)
+		})
+
+		this.connectToWS()
+
+		this.id = setInterval(() => {
+			API.get('/uptime').then(res => {
+				console.log(res.data)
+			})
+		}, 600_000)
 
 		if (localStorage.getItem('accessToken')) {
 			API.get('/auth/me')
@@ -121,6 +131,9 @@ export default {
 			this.$router.push('/welcome')
 			this.isLoaded = true
 		}
+	},
+	unmounted() {
+		clearInterval(this.id)
 	},
 	components: {
 		HeaderBar,

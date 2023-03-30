@@ -75,11 +75,7 @@ export default {
 				return null
 			}
 			const dataForSort = this.searchOptions.showMyOrders
-				? [
-						...this.data.filter(el =>
-							el.group.toLowerCase().includes(this.$store.state.auth.user?.nickname.toLowerCase())
-						),
-				  ]
+				? this.data.filter(el => el.group.toLowerCase().includes(this.$store.state.auth.user?.nickname.toLowerCase()))
 				: [...this.data]
 
 			switch (this.searchOptions.order) {

@@ -129,7 +129,7 @@ export default {
 }
 .keypicker__title:hover {
 	background: var(--bg-blue);
-	font-size: 26px;
+	font-size: 24px;
 	color: var(--dark-text) !important;
 }
 .keypicker__item {
