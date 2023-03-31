@@ -105,22 +105,29 @@ export default {
 			}
 		},
 		async fetchPeriods() {
-			const res = await API.get('http://localhost:666/data/payment').catch(err => {
+			const res = await API.get('/data/payment').catch(err => {
 				this.$store.commit('error/setError', err)
 			})
+
 			if (res?.status === 500) {
 				this.error = true
 			} else {
 				this.error &&= false
 			}
-			this.periods = res.data.periods
-			this.data = res.data.data
-			const list = []
-			list.push({ title: 'за всё время', color: '#6f8aec' })
-			res.data.periods.forEach(el => {
-				list.push({ title: el, color: '#6f8aec' })
-			})
-			this.periodsList = list
+
+			if (res?.status === 200) {
+				this.periods = res.data.periods
+				this.data = res.data.data
+
+				const list = []
+
+				list.push({ title: 'за всё время', color: 'var(--active-text)' })
+				res.data.periods.forEach(el => {
+					list.push({ title: el, color: 'var(--active-text)' })
+				})
+
+				this.periodsList = list
+			}
 		},
 		setPaymentOverall(player) {
 			if (this.searchedPeriod === 'за всё время') {
@@ -132,26 +139,34 @@ export default {
 	watch: {
 		async searchedPeriod(newVal) {
 			this.ordersLoading = true
+
 			const [from, to] = newVal.split(/\s*-\s/g)
-			const isAll = this.searchedPeriod !== 'за всё время'
-			const { data } = await API.get('http://localhost:666/data', {
-				params: isAll
-					? {
-							from,
-							to,
-					  }
-					: null,
-			}).catch(err => {
-				this.$store.commit('error/setError', err)
+
+			const res = await API.get('/data', {
+				params:
+					this.searchedPeriod !== 'за всё время'
+						? {
+								from,
+								to,
+						  }
+						: null,
 			})
-			this.orders = data.data
-			this.ordersLoading = false
+				.catch(err => {
+					this.$store.commit('error/setError', err)
+				})
+				.finally(() => {
+					this.ordersLoading = false
+				})
+
+			if (res?.status === 200) {
+				this.orders = res.data.data
+			}
 		},
 	},
 	mounted() {
 		this.fetchPeriods()
 		this.ordersLoading = true
-		API.get('http://localhost:666/data')
+		API.get('/data')
 			.then(res => {
 				this.orders = res.data.data
 			})
