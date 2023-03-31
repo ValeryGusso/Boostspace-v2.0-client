@@ -7,7 +7,6 @@ export default {
 		isLoading: false,
 		status: 'init',
 	}),
-	getters: {},
 	mutations: {
 		setPlayers(state, payload) {
 			if (payload === null) {

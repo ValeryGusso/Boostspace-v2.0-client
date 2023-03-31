@@ -56,9 +56,13 @@ export default {
 	},
 	methods: {
 		async fetchData() {
-			const res = await API.get('/data').finally(() => {
-				this.isLoading = false
-			})
+			const res = await API.get('/data')
+				.catch(err => {
+					this.$store.commit('error/setError', err)
+				})
+				.finally(() => {
+					this.isLoading = false
+				})
 			if (res.status === 200) {
 				this.data = res.data.data
 			}

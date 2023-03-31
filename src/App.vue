@@ -29,7 +29,7 @@
 		<p class="app__loading__text">Идёт загрузка пользователя, ожидайте...</p>
 	</div>
 	<connection-lost :WShandler="WShandler" v-if="isLoaded && !$store.state.websocket.connection" />
-	<!-- <connection-lost v-if="true" /> -->
+	<error-message v-if="$store.state.error.isError" />
 </template>
 
 <script>
@@ -41,6 +41,7 @@ import SettingsPage from '@/pages/SettingsPage.vue'
 import footerBlock from './components/footer/footer.vue'
 import { API } from '@/axios/API'
 import { debounce } from './utils/debounce'
+import errorMessage from './components/UI/errorMessage.vue'
 
 export default {
 	data() {
@@ -116,13 +117,17 @@ export default {
 			API.get('/auth/me')
 				.then(res => {
 					this.isLoaded = true
-					if (res.status === 200) {
+					if (res?.status === 200) {
 						this.$store.commit('auth/setUser', res.data.player)
 						this.$router.push('/home')
 					} else {
 						this.$store.commit('auth/setUser', null)
 						this.$router.push('/welcome')
 					}
+				})
+				.catch(err => {
+					console.log(err)
+					this.$store.commit('error/setError', err)
 				})
 				.finally(() => {
 					this.isLoaded = true
@@ -142,6 +147,7 @@ export default {
 		SettingsPage,
 		footerBlock,
 		connectionLost,
+		errorMessage,
 	},
 }
 </script>

@@ -105,8 +105,10 @@ export default {
 			}
 		},
 		async fetchPeriods() {
-			const res = await API.get('http://localhost:666/data/payment')
-			if (res.status === 500) {
+			const res = await API.get('http://localhost:666/data/payment').catch(err => {
+				this.$store.commit('error/setError', err)
+			})
+			if (res?.status === 500) {
 				this.error = true
 			} else {
 				this.error &&= false
@@ -139,6 +141,8 @@ export default {
 							to,
 					  }
 					: null,
+			}).catch(err => {
+				this.$store.commit('error/setError', err)
 			})
 			this.orders = data.data
 			this.ordersLoading = false
@@ -150,6 +154,9 @@ export default {
 		API.get('http://localhost:666/data')
 			.then(res => {
 				this.orders = res.data.data
+			})
+			.catch(err => {
+				this.$store.commit('error/setError', err)
 			})
 			.finally(() => {
 				this.ordersLoading = false

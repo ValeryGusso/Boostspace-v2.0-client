@@ -5,7 +5,6 @@ export default {
 		user: null,
 		isAuth: false,
 	}),
-	getters: {},
 	mutations: {
 		setUser(state, payload) {
 			if (payload) {

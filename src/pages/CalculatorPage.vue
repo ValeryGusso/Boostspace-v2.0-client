@@ -125,6 +125,9 @@ export default {
 						this.error = res.message
 					}
 				})
+				.catch(err => {
+					this.$store.commit('error/setError', err)
+				})
 				.finally(() => {
 					this.loading = false
 				})

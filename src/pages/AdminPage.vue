@@ -154,7 +154,14 @@ export default {
 
 			if (this.invite.status === 'init') {
 				this.invite.status = 'pending'
-				const { data } = await API.post('/users/invite', { name: this.name.value, role: this.role, group: this.group })
+				const { data } = await API.post('/users/invite', {
+					name: this.name.value,
+					role: this.role,
+					group: this.group,
+				}).catch(err => {
+					this.$store.commit('error/setError', err)
+				})
+				
 				if (data.success) {
 					this.invite.value = data.invite
 					this.invite.status = 'success'

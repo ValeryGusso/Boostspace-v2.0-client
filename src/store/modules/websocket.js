@@ -4,7 +4,6 @@ export default {
 		connection: false,
 		reconnect: null,
 	}),
-	getters: {},
 	mutations: {
 		connect(state, payload) {
 			state.socket = new WebSocket(process.env.VUE_APP_WS)
