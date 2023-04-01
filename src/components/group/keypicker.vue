@@ -145,6 +145,7 @@ export default {
 .keypicker__item:hover {
 	background: var(--main-text);
 	color: var(--dark-text);
+	transform: scale(1.1);
 }
 .keypicker__item__show {
 	transform: scale(1);

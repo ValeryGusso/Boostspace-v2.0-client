@@ -78,6 +78,7 @@
 			</div>
 			<div class="userpanel__button">
 				<button-submit
+					v-if="userUpdateData.length > 0"
 					:options="{
 						width: 400,
 						defaultWidth: 200,
@@ -161,7 +162,7 @@ export default {
 				}).catch(err => {
 					this.$store.commit('error/setError', err)
 				})
-				
+
 				if (data.success) {
 					this.invite.value = data.invite
 					this.invite.status = 'success'

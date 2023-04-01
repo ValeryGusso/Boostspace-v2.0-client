@@ -39,6 +39,7 @@ export default {
 	display: flex;
 	justify-content: center;
 	border-radius: 5px;
+	user-select: none;
 }
 .container > button {
 	width: var(--d);
