@@ -222,9 +222,7 @@ export default {
 	color: var(--main-text);
 }
 .calculator__payments__title {
-	width: calc(100% - 15px);
-	border-top-left-radius: 15px;
-	border-top-right-radius: 15px;
+	width: 435px;
 	border-bottom: none !important;
 	margin-bottom: 5px;
 	margin-right: 10px;
@@ -233,6 +231,7 @@ export default {
 	font-size: 32px;
 }
 .calculator__payments__row {
+	width: 435px;
 	display: flex;
 	align-items: center;
 	justify-content: center;

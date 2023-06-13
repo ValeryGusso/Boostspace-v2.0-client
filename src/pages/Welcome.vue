@@ -55,8 +55,8 @@ export default {
 .login {
 	position: absolute;
 	transform: scale(0);
-	transition: var(--fast-transition);
 	cursor: pointer;
+	transition: color var(--fast-transition);
 }
 .welcome:hover .welcome__text {
 	top: 0px;
@@ -76,9 +76,11 @@ export default {
 }
 .welcome:hover .left {
 	transform: scale(1.05) rotate(-15deg) rotateY(180deg) translate(200px, -50px);
+	transition: var(--fast-transition);
 }
 .welcome:hover .right {
 	transform: scale(1.05) rotate(15deg) translate(200px, -50px);
+	transition: var(--fast-transition);
 }
 .login:hover,
 .reg:hover {
