@@ -1,5 +1,5 @@
 <center>
-<img src="./src/assets/img/default_ava.jpg" alt="Описание изображения" width="300" align-self='center'>
+<img src="./src/assets/img/default_ava.jpg" alt="logo" width="300">
 </center>
 
 **Boostspace** is a unique solution designed specifically for our small online store. The application provides a convenient and intuitive interface for working with data from private Google spreadsheets. Users are given the ability to search, sort, create their own filters, and divide the overall table into salary periods. There is no longer a need to manually calculate the number of orders and salary; simply set the necessary filters, and Boostspace will handle all the work, providing the necessary information.
