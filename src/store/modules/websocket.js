@@ -1,11 +1,12 @@
 export default {
 	state: () => ({
 		socket: null,
+		handler: null,
 		connection: false,
 		reconnect: null,
 	}),
 	mutations: {
-		connect(state, payload) {
+		connect(state) {
 			state.socket = new WebSocket(process.env.VUE_APP_WS)
 
 			state.socket.onopen = () => {
@@ -14,13 +15,13 @@ export default {
 
 			state.socket.onclose = () => {
 				state.connection = false
-				payload()
 			}
 
 			state.socket.onerror = () => {
 				state.connection = false
-				payload()
 			}
+
+			state.socket.onmessage = state.handler
 		},
 		clear(state) {
 			if (state.socket) {
@@ -30,7 +31,7 @@ export default {
 			state.connection = false
 		},
 		setHandler(state, payload) {
-			state.socket.onmessage = payload
+			state.handler = payload
 		},
 	},
 	namespaced: true,

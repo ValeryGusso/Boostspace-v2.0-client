@@ -28,7 +28,10 @@
 		<img class="app__loading__img second" src="@/assets/img/loading.gif" alt="loading" draggable="false" />
 		<p class="app__loading__text">Идёт загрузка пользователя, ожидайте...</p>
 	</div>
-	<connection-lost :WShandler="WShandler" v-if="isLoaded && !$store.state.websocket.connection" />
+	<connection-lost
+		:WShandler="WShandler"
+		v-if="isLoaded && $store.state.auth.user && !$store.state.websocket.connection"
+	/>
 	<error-message v-if="$store.state.error.isError" />
 </template>
 
@@ -93,10 +96,6 @@ export default {
 					break
 			}
 		},
-		connectToWS() {
-			this.$store.commit('websocket/connect', this.connectToWS.bind(this))
-			this.$store.commit('websocket/setHandler', this.WShandler.bind(this))
-		},
 	},
 	mounted() {
 		document.body.style.overflow = 'hidden'
@@ -105,37 +104,45 @@ export default {
 			debounce(() => this.scroll(e), 100)
 		})
 
-		this.connectToWS()
-
 		this.id = setInterval(() => {
 			API.get('/uptime').then(res => {
 				console.log(res.data)
 			})
 		}, 600_000)
 
-		if (localStorage.getItem('accessToken')) {
-			API.get('/auth/me')
-				.then(res => {
-					this.isLoaded = true
-					if (res?.status === 200) {
-						this.$store.commit('auth/setUser', res.data.player)
-						this.$router.push('/home')
-					} else {
-						this.$store.commit('auth/setUser', null)
-						this.$router.push('/welcome')
-					}
-				})
-				.catch(err => {
-					console.log(err)
-					this.$store.commit('error/setError', err)
-				})
-				.finally(() => {
-					this.isLoaded = true
-				})
-		} else {
-			this.$router.push('/welcome')
-			this.isLoaded = true
-		}
+		API.get('/wakeup').then(res => {
+			if (!res.data.success) {
+				this.isLoaded = true
+				return
+			}
+
+			this.$store.commit('websocket/setHandler', this.WShandler.bind(this))
+
+			if (localStorage.getItem('accessToken')) {
+				API.get('/auth/me')
+					.then(res => {
+						this.isLoaded = true
+						if (res?.status === 200) {
+							this.$store.commit('auth/setUser', res.data.player)
+							this.$router.push('/home')
+							this.$store.commit('websocket/connect')
+						} else {
+							this.$store.commit('auth/setUser', null)
+							this.$router.push('/welcome')
+						}
+					})
+					.catch(err => {
+						console.log(err)
+						this.$store.commit('error/setError', err)
+					})
+					.finally(() => {
+						this.isLoaded = true
+					})
+			} else {
+				this.isLoaded = true
+				this.$router.push('/welcome')
+			}
+		})
 	},
 	unmounted() {
 		clearInterval(this.id)

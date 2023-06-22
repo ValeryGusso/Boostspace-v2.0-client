@@ -67,7 +67,6 @@ export default {
 				this.$refs.input.focus()
 			}
 			this.isActive = true
-			console.log(this.showPass)
 		},
 		change(e) {
 			this.$emit('update:value', e.target.value)

@@ -255,6 +255,7 @@ export default {
 				if (res?.status === 200) {
 					localStorage.setItem('accessToken', res.data.access)
 					this.$store.commit('auth/setUser', res.data.player)
+					this.$store.commit('websocket/connect')
 					this.$router.push('/home')
 				} else {
 					this.code.error = true
