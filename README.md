@@ -8,6 +8,18 @@ Due to the use of private data, access to the application is restricted, and reg
 
 The application is built on the technologies of Vue 3, VueX, Express, PostgresQS, and Sequelize. By leveraging Vue 3 and VueX, the application benefits from a scalable and reactive user interface, allowing for seamless data handling and real-time updates. Express serves as the backend framework, providing a solid foundation for building RESTful APIs and handling server-side logic. The integration of PostgresQS and Sequelize enables efficient and intuitive database operations, ensuring smooth data management within the application.
 
+<div align="center">
+<img src="https://media.discordapp.net/attachments/410547970505703436/1121408600892522566/image.png?width=1133&height=552" alt="screenshot" >
+</div>
+<div align="center">
+<img src="https://media.discordapp.net/attachments/410547970505703436/1121408644106424410/image.png?width=1133&height=553" alt="screenshot" >
+</div>
+<div align="center">
+<img src="https://media.discordapp.net/attachments/410547970505703436/1121408703359373444/image.png?width=1133&height=559" alt="screenshot" >
+</div>
+<img src="https://media.discordapp.net/attachments/410547970505703436/1121410609628585994/ezgif-4-6750284817.gif" alt="screenshot" >
+</div>
+
 # [Deployment version](https://boostspace.onrender.com/)
 
 ---
